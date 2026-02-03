@@ -75,6 +75,10 @@ with tab1:
             - Which regions experience the most climate-sensitive disasters?,
             -How do climate trends change over time for disasters?
         """)
+    
+
+        st.subheader("GitHub Repository Link:")
+        st.info("https://github.com/Vinay-15/NASA_ESONET_Climate_Analysis")
 
     with col2:
         st.image(
