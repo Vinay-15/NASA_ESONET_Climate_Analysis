@@ -96,6 +96,8 @@ with tab1:
             use_container_width=True
         )
 
+
+
 #https://www.reuters.com/news/picture/pictures-of-the-year-natural-disasters-idUSRTXJ1RBU/
 
 # --------------------------------------------------
@@ -169,6 +171,12 @@ with tab2:
         "images/NASAPwer.png",
         "NASA POWER Climate Data",
         "This dataset provides daily meteorological observations including temperature, humidity, wind speed, and precipitation for locations worldwide."
+    )
+
+    vizo_block(
+        "images/cleandata.png",
+        "Cleaned Dataset Sample",
+        "This image shows the cleaned data used for PCA analysis"
     )
 
 
@@ -402,6 +410,32 @@ with tab4:
     st.subheader("📂 Dataset Used for PCA")
 
     st.info("""
+    The dataset used for PCA was collected from NASA EONET and NASA POWER APIs
+    and cleaned as described in the Data Collection tab.
+
+    Below are links and previews of the datasets used for PCA.
+    """)
+
+
+    # Link to datasets (change paths if needed)
+    st.markdown("**EONET URL** https://eonet.gsfc.nasa.gov/api/v3/events")
+    st.markdown("**Power URL:** https://power.larc.nasa.gov/api/temporal/daily/point")
+
+    # Screenshots / previews
+    vizo_block(
+        "images/NASAPwer.png",
+        "Raw Dataset Sample",
+        ""
+    )
+
+    vizo_block(
+        "images/cleandata.png",
+        "Cleaned Dataset Sample",
+        "This image shows the cleaned data used for PCA analysis"
+    )
+
+
+    st.info("""
     PCA was applied to the cleaned climate-disaster dataset that combines
     NASA EONET disaster records with NASA POWER climate observations.
 
@@ -418,7 +452,43 @@ with tab4:
     - Month  
     """)
 
-    st.info("The dataset was standardized using StandardScaler before applying PCA.")
+
+    # ----------------------------
+    # StandardScaler and PCA Code
+    # ----------------------------
+    st.subheader("⚙️ Data Scaling and PCA Implementation")
+
+    st.info("""
+    The cleaned dataset was standardized using Scikit-Learn's StandardScaler.
+    Principal Component Analysis was then applied using the PCA module.
+
+    Below is the Python code used for scaling and PCA.
+    """)
+
+    st.code("""
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.decomposition import PCA
+    import pandas as pd
+
+    # Select numerical features
+    features = df[["temp","humidity","wind","precip","latitude","longitude","month"]]
+
+    # Standardize
+    scaler = StandardScaler()
+    scaled_data = scaler.fit_transform(features)
+
+    # PCA (2D)
+    pca_2 = PCA(n_components=2)
+    pca_2d = pca_2.fit_transform(scaled_data)
+
+    # PCA (3D)
+    pca_3 = PCA(n_components=3)
+    pca_3d = pca_3.fit_transform(scaled_data)
+
+    # Eigenvalues
+    eigenvalues = pca_2.explained_variance_
+    print(eigenvalues)
+    """)
 
     # ----------------------------
     # Normalization
@@ -523,6 +593,19 @@ with tab4:
     the dataset, capturing most of the variability.
     """)
 
+
+    st.info("""
+    The following outputs show the explained variance ratios and
+    eigenvalues generated from PCA.
+    """)
+
+    # Output screenshots
+    st.image("images/95variance.png",
+            caption="Explained Variance Ratios")
+
+    st.image("images/top3eigen.png",
+            caption="Top Eigenvalues from PCA")
+
     # ----------------------------
     # Interpretation
     # ----------------------------
@@ -616,6 +699,51 @@ with tab5:
     """)
 
     st.info("All clustering was performed on standardized and PCA-reduced data.")
+
+    # ----------------------------
+    # Clustering Code
+    # ----------------------------
+    st.subheader("💻 Clustering Implementation Code")
+
+    st.info("""
+    Below is the Python code used for K-Means, Hierarchical,
+    and DBSCAN clustering.
+    """)
+
+    # GitHub / Notebook Link (update this!)
+    st.markdown("📌 [View Full Clustering Code on GitHub](notebooks/clustering.ipynb)")
+
+    st.code("""
+    from sklearn.cluster import KMeans, DBSCAN
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.decomposition import PCA
+    from sklearn.metrics import silhouette_score
+    from scipy.cluster.hierarchy import dendrogram, linkage
+    import pandas as pd
+
+    # Standardize
+    scaler = StandardScaler()
+    scaled = scaler.fit_transform(df)
+
+    # Silhouette Analysis
+    scores = []
+    for k in range(2,7):
+        km = KMeans(n_clusters=k)
+        labels = km.fit_predict(pca_data)
+        scores.append(silhouette_score(pca_data, labels))
+
+    # KMeans
+    kmeans = KMeans(n_clusters=3)
+    k_labels = kmeans.fit_predict(pca_data)
+    centroids = kmeans.cluster_centers_
+
+    # Hierarchical
+    Z = linkage(pca_data, method='ward')
+
+    # DBSCAN
+    dbscan = DBSCAN(eps=0.5, min_samples=5)
+    db_labels = dbscan.fit_predict(pca_data)
+    """)
 
     # ----------------------------
     # Silhouette Method
@@ -828,6 +956,16 @@ with tab6:
     - Rule Generation
     """)
 
+
+    st.info("""
+    The Apriori algorithm identifies frequent itemsets
+    by exploiting the property that all subsets of a
+    frequent itemset must also be frequent.
+
+    Rules are generated from frequent itemsets using
+    support, confidence, and lift.
+    """)
+
     # ----------------------------
     # Data Preparation
     # ----------------------------
@@ -902,6 +1040,35 @@ with tab6:
     st.write("""
     Humidity and precipitation appear as central nodes,
     indicating their strong influence in disaster conditions.
+    """)
+
+
+    # ----------------------------
+    # ARM Code
+    # ----------------------------
+    st.subheader("💻 ARM Implementation Code")
+
+    st.info("Apriori was implemented using mlxtend.")
+
+    # GitHub Link
+    st.markdown("📌 [View ARM Code on GitHub](https://github.com/Vinay-15/NASA_ESONET_Climate_Analysis/blob/main/NASA_climate_analysis-2.ipynb)")
+
+    st.code("""
+    from mlxtend.frequent_patterns import apriori, association_rules
+    import pandas as pd
+
+    # Apriori
+    freq = apriori(df, min_support=0.05, use_colnames=True)
+
+    # Generate Rules
+    rules = association_rules(freq,
+                            metric="confidence",
+                            min_threshold=0.6)
+
+    # Sort rules
+    top_support = rules.sort_values('support', ascending=False).head(15)
+    top_conf = rules.sort_values('confidence', ascending=False).head(15)
+    top_lift = rules.sort_values('lift', ascending=False).head(15)
     """)
 
     # ----------------------------
