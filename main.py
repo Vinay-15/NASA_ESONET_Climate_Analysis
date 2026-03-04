@@ -26,14 +26,16 @@ st.markdown(
 # --------------------------------------------------
 # TABS
 # --------------------------------------------------
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
     "Introduction",
     "Data Collection",
     "Exploratory Analysis",
+    "PCA Analysis",
+    "Clustering Analysis",
+    "ARM Analysis",
     "Models",
     "Results & Discussion",
-    "Conclusion"
-])
+    "Conclusion"])
 
 # --------------------------------------------------
 # INTRODUCTION
@@ -176,6 +178,16 @@ with tab2:
 with tab3:
     st.header("📊 Exploratory Data Analysis")
 
+    def viza_block(image, title, description):
+        with st.container():
+            col1, col2 = st.columns([1.5, 1.0])
+            with col1:
+                st.image(image, use_container_width=True)
+            with col2:
+                st.subheader(title)
+                st.write(description)
+        st.markdown("---")
+
     st.write("""
     Exploratory Data Analysis (EDA) was conducted to understand
     the distribution of climate variables and their relationship
@@ -253,7 +265,7 @@ with tab3:
 # --------------------------------------------------
 # MODELS
 # --------------------------------------------------
-with tab4:
+with tab7:
     st.header("🤖 Machine Learning Models (Upcomimg)")
     if False:
         st.info("""
@@ -278,7 +290,7 @@ with tab4:
 # --------------------------------------------------
 # RESULTS
 # --------------------------------------------------
-with tab5:
+with tab8:
     st.header("📈 Results & Discussion")
     if False:
         st.write("""
@@ -304,7 +316,7 @@ with tab5:
 # --------------------------------------------------
 # CONCLUSION
 # --------------------------------------------------
-with tab6:
+with tab9:
     st.header("✅ Conclusion & Future Work")
     if False:
         st.write("""
@@ -329,3 +341,639 @@ with tab6:
         """)
 
     st.success("🌱 Data-driven climate analysis can support disaster preparedness and mitigation.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+with tab4:
+
+    st.header("📉 Principal Component Analysis (PCA)")
+
+    # ----------------------------
+    # PCA Description
+    # ----------------------------
+    st.subheader("🔍 What is PCA?")
+
+
+    st.info("""
+    Principal Component Analysis (PCA) is a dimensionality reduction technique
+    that transforms a dataset with many correlated variables into a smaller
+    set of new uncorrelated variables called principal components.
+
+    Each principal component represents a linear combination of the original
+    variables and captures as much variance (information) as possible.
+    The first component explains the most variance, the second explains the next
+    most, and so on.
+
+    PCA helps simplify complex datasets, reduce noise, visualize high-dimensional
+    data, and identify the most influential variables while retaining most of
+    the original information.
+    """)
+
+
+
+    # ----------------------------
+    # Dataset Used
+    # ----------------------------
+    st.subheader("📂 Dataset Used for PCA")
+
+    st.info("""
+    PCA was applied to the cleaned climate-disaster dataset that combines
+    NASA EONET disaster records with NASA POWER climate observations.
+
+    Only numerical variables were used, as PCA requires quantitative data.
+    All categorical labels and text fields were removed before analysis.
+    
+    **Variables Used:**
+    - Temperature  
+    - Humidity  
+    - Wind Speed  
+    - Precipitation  
+    - Latitude  
+    - Longitude  
+    - Month  
+    """)
+
+    st.info("The dataset was standardized using StandardScaler before applying PCA.")
+
+    # ----------------------------
+    # Normalization
+    # ----------------------------
+    st.subheader("⚙️ Data Normalization")
+
+    st.info("""
+    Before applying PCA, the data was normalized using StandardScaler so that
+    each variable has a mean of 0 and a standard deviation of 1.
+
+    This step is essential because PCA is sensitive to scale.
+    Without normalization, variables with larger values would dominate
+    the principal components.
+    """)
+
+    # ----------------------------
+    # PCA 2D
+    # ----------------------------
+    st.subheader("📊 PCA with 2 Components (2D)")
+
+
+    viz_block(
+    "images/pca_2d.png",
+    "PCA with 2 Components (2D)",
+    """
+    PCA was first performed using two principal components.
+
+    The explained variance ratios were:
+
+    - PC1: 59.18%  
+    - PC2: 25.96%  
+
+    Together, these two components retain approximately **85.15%** of the
+    original dataset information.
+
+    This indicates that most of the important patterns in the data can be
+    represented in just two dimensions.
+    """)
+
+
+    # ----------------------------
+    # PCA 3D
+    # ----------------------------
+    st.subheader("📈 PCA with 3 Components (3D)")
+
+
+    viz_block(
+        "images/pca_3d.png",
+        "PCA with 3 Components (3D)",
+        """
+    PCA was next performed using three principal components.
+
+    The explained variance ratios were:
+
+    - PC1: 59.18%  
+    - PC2: 25.96%  
+    - PC3: 8.88%  
+
+    Together, these components retain approximately **94.03%** of the
+    original information.
+
+    Adding the third component significantly improves information retention
+    while still maintaining a low-dimensional structure.
+    """)
+
+    # ----------------------------
+    # Variance Retention
+    # ----------------------------
+    st.subheader("📐 Variance Retention Analysis")
+
+
+    viz_block(
+    "images/pca_variance.png",
+    "ariance Retention Analysis",
+    """
+    The cumulative variance plot shows how much information is retained
+    as more principal components are added.
+
+    From the plot, at least **4 components** are required to retain
+    **95% or more** of the total variance.
+
+    This means the original dataset can be reduced from 7 variables
+    to 4 principal components while preserving nearly all information.
+    """)
+
+    # ----------------------------
+    # Eigenvalues
+    # ----------------------------
+    st.subheader("🔢 Eigenvalues")
+
+    st.info("""
+    Eigenvalues represent the amount of variance captured by each
+    principal component.
+
+    The top three eigenvalues obtained from PCA were:
+
+    - PC1: 4.17  
+    - PC2: 1.83  
+    - PC3: 0.63  
+
+    These values confirm that the first principal component dominates
+    the dataset, capturing most of the variability.
+    """)
+
+    # ----------------------------
+    # Interpretation
+    # ----------------------------
+    st.subheader("🧠 Interpretation of PCA Results")
+
+    st.info("""
+    The PCA results show that climate variables related to temperature,
+    humidity, wind speed, precipitation, and geographic location
+    are strongly correlated.
+
+    A small number of components can summarize most of the dataset,
+    indicating that disaster-related climate conditions share
+    common underlying patterns.
+
+    The dominance of the first component suggests that overall
+    climate intensity (temperature, humidity, and moisture levels)
+    plays a major role in distinguishing disaster events.
+
+    These reduced dimensions were later used for clustering and
+    modeling to improve computational efficiency and visualization.
+    """)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# --------------------------------------------------
+# CLUSTERING ANALYSIS
+# --------------------------------------------------
+with tab5:
+
+    st.header("🧩 Clustering Analysis")
+
+    # ----------------------------
+    # Overview
+    # ----------------------------
+    st.subheader("🔍 Overview of Clustering Methods")
+
+    st.info("""
+    Clustering is an unsupervised machine learning technique used to
+    group similar data points together based on their characteristics.
+
+    In this project, three major clustering approaches were applied:
+
+    - K-Means (Partition-Based Clustering)
+    - Hierarchical Clustering
+    - DBSCAN (Density-Based Clustering)
+
+    These methods help identify natural groupings of disaster events
+    based on climate and geographic features.
+    
+    ### Clustering Methods Used:
+
+    - **K-Means:** Divides data into K clusters by minimizing within-cluster variance.
+    - **Hierarchical:** Builds clusters step-by-step using distance relationships.
+    - **DBSCAN:** Groups dense regions and detects noise points.
+    """)
+
+    # ----------------------------
+    # Data Preparation
+    # ----------------------------
+    st.subheader("⚙️ Data Preparation")
+
+    st.info("""
+    Before applying clustering algorithms, the dataset was prepared
+    using the following steps:
+
+    - Removed categorical labels and text fields
+    - Retained only numerical variables
+    - Applied StandardScaler for normalization
+    - Reduced dimensionality using PCA (3 components)
+
+    PCA-reduced data was used for clustering to improve visualization
+    and computational efficiency.
+    
+    ### Features Used After Processing:
+    - PC1
+    - PC2
+    - PC3
+    """)
+
+    st.info("All clustering was performed on standardized and PCA-reduced data.")
+
+    # ----------------------------
+    # Silhouette Method
+    # ----------------------------
+    st.subheader("📐 Silhouette Method for Optimal K")
+    viz_block(
+        "images/silhouette.png",
+        "Silhouette Method for Optimal K",
+        """
+    The Silhouette Method was used to evaluate different values of K
+    for K-Means clustering.
+
+    The silhouette score measures how well each data point fits within
+    its assigned cluster compared to other clusters.
+
+    Higher scores indicate better-defined clusters.
+    """
+    )
+
+
+    st.write("""
+    The Silhouette Method was used to evaluate different values of K
+    for K-Means clustering.
+
+    The silhouette score measures how well each data point fits within
+    its assigned cluster compared to other clusters.
+
+    Higher scores indicate better-defined clusters.
+    """)
+
+    st.write("""
+    The highest silhouette score occurs at **K = 2**, but K = 3, 4, and 5
+    were selected for further analysis to explore more detailed
+    cluster structures.
+    """)
+
+    # ----------------------------
+    # KMeans Results
+    # ----------------------------
+    st.subheader("📊 K-Means Clustering Results")
+
+    st.image(
+        "images/kmeans_345.png",
+        use_container_width=True
+    )
+
+    st.write("""
+    K-Means clustering was applied using K = 3, 4, and 5 clusters.
+
+    These values were selected based on silhouette scores and visual
+    interpretability.""")
+    st.info("""
+    ### As K increases:
+    - Clusters become more detailed
+    - Groups become smaller
+    - Interpretability may decrease
+    """)
+
+    st.info("""
+    ### Observations:
+
+    - K = 3: Produces broad, well-separated clusters
+    - K = 4: Reveals subgroups within major clusters
+    - K = 5: Produces finer segmentation with some overlap
+    """)
+
+    # ----------------------------
+    # Hierarchical Clustering
+    # ----------------------------
+    st.subheader("🌳 Hierarchical Clustering")
+
+    vizo_block(
+        "images/dendrogram.png",
+        "",
+        """
+        Hierarchical clustering was performed using Ward's linkage method.
+
+        This method builds a tree-like structure called a dendrogram,
+        showing how clusters merge at different distances.
+
+        Each horizontal line represents a cluster merge.
+        Higher merges indicate more dissimilar groups.
+        """)
+
+    st.write("""
+    By cutting the dendrogram at different heights, multiple
+    cluster structures can be obtained.
+
+    The dendrogram suggests approximately 3–5 major clusters,
+    which aligns with the K-Means results.
+    """)
+
+    # ----------------------------
+    # DBSCAN
+    # ----------------------------
+    st.subheader("🌐 DBSCAN Clustering")
+
+
+
+    viz_block(
+        "images/dbscan.png",
+        "DBSCAN Clustering",
+        """
+    DBSCAN is a density-based clustering algorithm that groups points
+    in dense regions and identifies outliers as noise.
+
+    Unlike K-Means, DBSCAN does not require specifying the number of clusters.
+    
+
+    In this analysis:
+
+    - Dense regions formed meaningful clusters
+    - Sparse points were classified as noise
+    - Some extreme disaster events were identified as outliers
+    """)
+
+    # ----------------------------
+    # Comparison
+    # ----------------------------
+    st.subheader("📊 Comparison of Clustering Methods")
+
+    st.write("""
+    Each clustering method provides a different perspective
+    on the dataset.
+    """)
+
+    st.markdown("""
+    | Method       | Strengths                          | Limitations                     |
+    |--------------|-----------------------------------|---------------------------------|
+    | K-Means      | Simple, efficient, interpretable  | Requires K selection            |
+    | Hierarchical | Visual structure, flexible        | Computationally expensive       |
+    | DBSCAN       | Finds noise, no K required         | Sensitive to parameters         |
+    """)
+
+    # ----------------------------
+    # Interpretation
+    # ----------------------------
+    st.subheader("🧠 Interpretation of Results")
+
+    st.info("""
+    The clustering results indicate that disaster events can be grouped
+    based on similarities in climate and geographic conditions.
+
+    Major clusters appear to reflect:
+
+    - Hot, dry, low-precipitation environments (wildfire-prone)
+    - High-moisture, high-wind environments (storm/flood-prone)
+    - Cold or extreme regions (ice-related events)
+
+    The dominance of temperature and humidity in PCA is reflected
+    in the cluster structures.
+    """)
+
+    # ----------------------------
+    # Conclusions
+    # ----------------------------
+    st.subheader("✅ Clustering Conclusions")
+
+    st.info("""
+    Clustering analysis demonstrates that climate variables
+    can meaningfully separate disaster events into distinct groups.
+
+    K-Means provided the most interpretable clusters,
+    Hierarchical clustering confirmed cluster structure,
+    and DBSCAN highlighted extreme and unusual events.
+
+    These results support the use of unsupervised learning
+    for disaster pattern discovery and risk analysis.
+    """)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# --------------------------------------------------
+# ASSOCIATION RULE MINING (ARM)
+# --------------------------------------------------
+with tab6:
+
+    st.header("🔗 Association Rule Mining (ARM) Analysis")
+
+    # ----------------------------
+    # Overview
+    # ----------------------------
+    st.subheader("🔍 Overview of Association Rule Mining")
+
+    st.info("""
+    Association Rule Mining is used to discover hidden relationships
+    between variables in large datasets.
+
+    In this project, ARM was applied to identify frequent
+    combinations of climate conditions that occur together
+    during disaster events.
+    
+    ### ARM Techniques Used:
+
+    - Apriori Algorithm
+    - Frequent Itemset Mining
+    - Rule Generation
+    """)
+
+    # ----------------------------
+    # Data Preparation
+    # ----------------------------
+    st.subheader("⚙️ Data Preparation for ARM")
+
+    st.info("""
+    Before applying ARM, continuous climate variables were converted
+    into categorical levels.
+
+    Each variable was divided into three categories:
+    - Low
+    - Medium
+    - High
+
+    The categorical data was then converted into
+    one-hot encoded format.
+    
+    ### Variables Used:
+    - Temperature Category
+    - Humidity Category
+    - Wind Speed Category
+    - Precipitation Category
+    """)
+
+    st.info("ARM was applied on one-hot encoded climate categories.")
+
+    # ----------------------------
+    # Support vs Confidence
+    # ----------------------------
+    st.subheader("📊 Support vs Confidence Analysis")
+
+    viza_block(
+        "images/support_vs_confidence.png",
+        "Support vs Confidence Analysis",
+        """
+    This scatter plot shows the relationship between
+    support and confidence for generated rules.
+
+    - Support measures how frequently a rule appears
+    - Confidence measures how reliable the rule is
+
+    Rules with high confidence and moderate support
+    are considered most useful.
+    """)
+
+    st.write("""
+    Most rules show moderate support and high confidence,
+    indicating stable climate relationships.
+    """)
+
+    # ----------------------------
+    # Association Network
+    # ----------------------------
+    st.subheader("🌐 Association Rule Network")
+
+
+    viza_block(
+        "images/arm_network.png",
+        "Association Rule Network",
+        """
+    The association network visualizes relationships
+    between climate categories.
+
+    - Nodes represent climate conditions
+    - Edges represent strong association rules
+
+    This helps identify dominant interaction patterns
+    between variables.
+    """)
+
+
+    st.write("""
+    Humidity and precipitation appear as central nodes,
+    indicating their strong influence in disaster conditions.
+    """)
+
+    # ----------------------------
+    # Rule Evaluation Metrics
+    # ----------------------------
+    st.subheader("📐 Rule Evaluation Metrics")
+
+    st.info("""
+    Each generated rule was evaluated using multiple metrics:
+
+    - Support
+    - Confidence
+    - Lift
+    - Leverage
+    - Conviction
+    
+    ### Interpretation of Metrics:
+
+    - Support: Frequency of rule occurrence
+    - Confidence: Strength of implication
+    - Lift > 1: Positive dependency
+    - Leverage: Difference from random chance
+    - Conviction: Directional dependency
+    """)
+
+    # ----------------------------
+    # Key Findings
+    # ----------------------------
+    st.subheader("🧠 Key Findings from ARM")
+
+    st.info("""
+    The ARM analysis revealed strong dependencies
+    among climate variables.
+    
+    ### Major Observations:
+
+    - High humidity is frequently linked with low temperature
+    - Low wind speed often occurs with low precipitation
+    - Medium precipitation is associated with moderate temperature
+    - Certain multi-variable patterns show very high confidence
+    """)
+
+    # ----------------------------
+    # Comparison with Other Methods
+    # ----------------------------
+    st.subheader("📊 Comparison with PCA and Clustering")
+
+    st.info("""
+    ARM complements PCA and clustering by providing
+    interpretable rule-based relationships.
+    """)
+
+    st.markdown("""
+    | Method     | Purpose                         | Output Type        |
+    |------------|---------------------------------|--------------------|
+    | PCA        | Dimensionality Reduction        | Components         |
+    | Clustering | Group Similar Events            | Clusters           |
+    | ARM        | Discover Hidden Associations    | Rules              |
+    """)
+
+    # ----------------------------
+    # Conclusions
+    # ----------------------------
+    st.subheader("✅ ARM Conclusions")
+
+    st.info("""
+    Association Rule Mining successfully identified
+    meaningful relationships among climate variables.
+
+    The results show that disasters are influenced
+    by recurring combinations of weather conditions.
+
+    ARM improves interpretability by translating
+    numerical patterns into understandable rules.
+    """)
