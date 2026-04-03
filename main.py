@@ -26,23 +26,16 @@ st.markdown(
 # --------------------------------------------------
 # TABS
 # --------------------------------------------------
-<<<<<<< HEAD
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
-=======
 tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12 = st.tabs([
->>>>>>> b6f1a36 (Add Decision Tree, Regression, and Models comparison tabs; update Naive Bayes section)
     "Introduction",
     "Data Collection",
     "Exploratory Analysis",
     "PCA Analysis",
     "Clustering Analysis",
     "ARM Analysis",
-<<<<<<< HEAD
-=======
     "Naive Bayes",
     "Decision Tree",
     "Regression",
->>>>>>> b6f1a36 (Add Decision Tree, Regression, and Models comparison tabs; update Naive Bayes section)
     "Models",
     "Results & Discussion",
     "Conclusion"])
@@ -283,26 +276,12 @@ with tab3:
 # --------------------------------------------------
 # MODELS
 # --------------------------------------------------
-<<<<<<< HEAD
-with tab7:
-    st.header("🤖 Machine Learning Models (Upcomimg)")
-    if False:
-        st.info("""
-        The prepared dataset allows for the application of several
-        machine learning techniques to identify patterns and make predictions.
-        """)
-=======
->>>>>>> b6f1a36 (Add Decision Tree, Regression, and Models comparison tabs; update Naive Bayes section)
 
 
 # --------------------------------------------------
 # RESULTS
 # --------------------------------------------------
-<<<<<<< HEAD
-with tab8:
-=======
 with tab11:
->>>>>>> b6f1a36 (Add Decision Tree, Regression, and Models comparison tabs; update Naive Bayes section)
     st.header("📈 Results & Discussion")
     if False:
         st.write("""
@@ -328,11 +307,7 @@ with tab11:
 # --------------------------------------------------
 # CONCLUSION
 # --------------------------------------------------
-<<<<<<< HEAD
-with tab9:
-=======
 with tab12:
->>>>>>> b6f1a36 (Add Decision Tree, Regression, and Models comparison tabs; update Naive Bayes section)
     st.header("✅ Conclusion & Future Work")
     if False:
         st.write("""
@@ -1152,8 +1127,6 @@ with tab6:
     ARM improves interpretability by translating
     numerical patterns into understandable rules.
     """)
-<<<<<<< HEAD
-=======
 
 
 
@@ -2497,4 +2470,3 @@ with tab10:
     neighboring classes.
     """)
 
->>>>>>> b6f1a36 (Add Decision Tree, Regression, and Models comparison tabs; update Naive Bayes section)
