@@ -26,13 +26,23 @@ st.markdown(
 # --------------------------------------------------
 # TABS
 # --------------------------------------------------
+<<<<<<< HEAD
 tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
+=======
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12 = st.tabs([
+>>>>>>> b6f1a36 (Add Decision Tree, Regression, and Models comparison tabs; update Naive Bayes section)
     "Introduction",
     "Data Collection",
     "Exploratory Analysis",
     "PCA Analysis",
     "Clustering Analysis",
     "ARM Analysis",
+<<<<<<< HEAD
+=======
+    "Naive Bayes",
+    "Decision Tree",
+    "Regression",
+>>>>>>> b6f1a36 (Add Decision Tree, Regression, and Models comparison tabs; update Naive Bayes section)
     "Models",
     "Results & Discussion",
     "Conclusion"])
@@ -273,6 +283,7 @@ with tab3:
 # --------------------------------------------------
 # MODELS
 # --------------------------------------------------
+<<<<<<< HEAD
 with tab7:
     st.header("🤖 Machine Learning Models (Upcomimg)")
     if False:
@@ -280,25 +291,18 @@ with tab7:
         The prepared dataset allows for the application of several
         machine learning techniques to identify patterns and make predictions.
         """)
+=======
+>>>>>>> b6f1a36 (Add Decision Tree, Regression, and Models comparison tabs; update Naive Bayes section)
 
-        st.subheader("Models Considered")
-        st.write("""
-        - **K-Means Clustering:** Group disasters based on climate similarity  
-        - **Principal Component Analysis (PCA):** Reduce dimensionality  
-        - **Decision Trees:** Identify important climate thresholds  
-        - **Naive Bayes:** Probabilistic classification of disaster types  
-        - **Support Vector Machines (SVM):** Disaster category classification  
-        """)
-
-        st.info("""
-        These models help explore whether climate conditions
-        can meaningfully distinguish between different disaster categories.
-        """)
 
 # --------------------------------------------------
 # RESULTS
 # --------------------------------------------------
+<<<<<<< HEAD
 with tab8:
+=======
+with tab11:
+>>>>>>> b6f1a36 (Add Decision Tree, Regression, and Models comparison tabs; update Naive Bayes section)
     st.header("📈 Results & Discussion")
     if False:
         st.write("""
@@ -324,7 +328,11 @@ with tab8:
 # --------------------------------------------------
 # CONCLUSION
 # --------------------------------------------------
+<<<<<<< HEAD
 with tab9:
+=======
+with tab12:
+>>>>>>> b6f1a36 (Add Decision Tree, Regression, and Models comparison tabs; update Naive Bayes section)
     st.header("✅ Conclusion & Future Work")
     if False:
         st.write("""
@@ -1144,3 +1152,1349 @@ with tab6:
     ARM improves interpretability by translating
     numerical patterns into understandable rules.
     """)
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+# Naive Bayes
+
+with tab7:
+ 
+    st.header("📊 Naive Bayes Classification")
+ 
+    # ----------------------------
+    # (a) Overview
+    # ----------------------------
+    st.subheader("🔍 Overview: What is Naive Bayes?")
+ 
+    st.info("""
+    **Naive Bayes (NB)** is a family of probabilistic classifiers based on 
+    **Bayes' Theorem** with the "naive" assumption that all features are 
+    **conditionally independent** given the class label. Despite this simplifying 
+    assumption, NB classifiers perform remarkably well in many real-world 
+    applications, especially when the dataset is relatively small or the 
+    dimensionality is high.
+ 
+    Naive Bayes is commonly used for **text classification** (spam filtering, 
+    sentiment analysis), **medical diagnosis**, **weather prediction**, and 
+    any scenario where fast, probabilistic classification is needed. It works 
+    well as a baseline model and is computationally efficient for both 
+    training and prediction.
+    """)
+ 
+    st.markdown("---")
+ 
+    st.subheader("📌 Naive Bayes Flavors: Compare & Contrast")
+ 
+    col1, col2 = st.columns(2)
+ 
+    with col1:
+        st.info("""
+        **🔵 Multinomial Naive Bayes (MNB)**
+        
+        Designed for **discrete count data** — features represent frequencies 
+        or counts (e.g., word counts in text). Works with non-negative values.
+        
+        - **Best for:** Text classification, document categorization
+        - **Assumption:** Features follow a multinomial distribution
+        - **Data type:** Non-negative integers or scaled values [0, 1]
+        - **In this project:** Climate features were scaled to [0, 1] using 
+          MinMaxScaler before applying MNB
+        """)
+ 
+        st.info("""
+        **🟢 Gaussian Naive Bayes (GNB)**
+        
+        Assumes features follow a **normal (Gaussian) distribution**. Each 
+        class models features with their own mean and variance.
+        
+        - **Best for:** Continuous numerical data
+        - **Assumption:** Features are normally distributed within each class
+        - **Data type:** Continuous values (standardized recommended)
+        - **In this project:** Features were standardized using StandardScaler 
+          (mean=0, std=1) before applying GNB
+        """)
+ 
+    with col2:
+        st.info("""
+        **🟠 Bernoulli Naive Bayes (BNB)**
+        
+        Designed for **binary/boolean features** — each feature is either 
+        present (1) or absent (0).
+        
+        - **Best for:** Binary feature data, document classification with 
+          word presence/absence
+        - **Assumption:** Features follow a Bernoulli (binary) distribution
+        - **Data type:** Binary values (0 or 1)
+        - **In this project:** Each feature was binarized at its median value — 
+          values above median = 1, below = 0
+        """)
+ 
+        st.info("""
+        **🟡 Categorical Naive Bayes (CNB)**
+        
+        Designed for **categorical features** where each feature takes on 
+        a discrete set of categories (not ordered).
+        
+        - **Best for:** Survey data, categorical attributes
+        - **Assumption:** Features are categorically distributed
+        - **Data type:** Discrete category labels
+        - **Note:** Not used in this project since our features are 
+          continuous climate measurements, not categorical
+        """)
+ 
+    st.markdown("---")
+ 
+    st.markdown("""
+    | NB Variant     | Feature Type         | Distribution Assumed | Scaling Needed        |
+    |----------------|----------------------|----------------------|-----------------------|
+    | Multinomial    | Counts / Frequencies | Multinomial          | MinMaxScaler [0, 1]   |
+    | Gaussian       | Continuous           | Normal (Gaussian)    | StandardScaler        |
+    | Bernoulli      | Binary (0/1)         | Bernoulli            | Binarize at threshold |
+    | Categorical    | Discrete categories  | Categorical          | None                  |
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # (b) Data Preparation
+    # ----------------------------
+    st.subheader("⚙️ Data Preparation")
+ 
+    st.info("""
+    **Creating the Target Label — Wildfire Severity**
+ 
+    Since the dataset is dominated by wildfire events (149 out of 150), a direct 
+    category classification was not meaningful. Instead, a **composite fire risk 
+    score** was created from multiple climate variables:
+ 
+    ```
+    risk_score = temp × 0.4 + (100 − humidity) × 0.35 + wind × 0.25
+    ```
+ 
+    This score was then binned into **three balanced severity classes** using quantile 
+    binning: **Low Severity**, **Moderate Severity**, and **High Severity** (50 samples each).
+ 
+    **Features used for prediction** (independent of the label):
+    - Latitude, Longitude, Month, Precipitation
+ 
+    Temperature, humidity, and wind speed were excluded from features since they 
+    were used to construct the severity label.
+    """)
+ 
+    st.info("""
+    **Train/Test Split**
+ 
+    The data was split into **70% training** (105 samples) and **30% testing** (45 samples) 
+    using stratified sampling to ensure equal class representation in both sets.
+ 
+    Training and testing sets are **disjoint** — no data point appears in both sets. 
+    This is essential to get an honest evaluation of model performance. If training 
+    data leaked into the test set, accuracy would be artificially inflated.
+    """)
+ 
+
+    viza_block(
+    "images/nb_train_test_sample.png",
+    "Training and Testing Set Samples (Disjoint)",
+    """
+    """)
+ 
+    st.info("""
+    **Different preprocessing for each NB flavor:**
+    - **Multinomial NB:** MinMaxScaler → all values in [0, 1]
+    - **Gaussian NB:** StandardScaler → mean=0, std=1
+    - **Bernoulli NB:** Each feature binarized at its median → 0 or 1
+    """)
+
+ 
+    st.markdown("📌 [View Data Preparation Code on GitHub](https://github.com/Vinay-15/NASA_ESONET_Climate_Analysis/blob/main/NASA_climate_analysis-2.ipynb)")
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # (c) Code
+    # ----------------------------
+    st.subheader("💻 Model Implementation Code")
+ 
+    st.info("All three Naive Bayes models were implemented using **Scikit-Learn**.")
+ 
+    st.code("""
+    from sklearn.naive_bayes import MultinomialNB, GaussianNB, BernoulliNB
+    from sklearn.preprocessing import MinMaxScaler, StandardScaler
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import accuracy_score, classification_report, ConfusionMatrixDisplay
+    
+    features = ["latitude", "longitude", "month", "precip"]
+    X = combined_df[features]
+    y = combined_df["severity_encoded"]
+    
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.30, random_state=42, stratify=y)
+    
+    # --- Multinomial NB ---
+    scaler_mm = MinMaxScaler()
+    X_train_mn = scaler_mm.fit_transform(X_train)
+    X_test_mn  = scaler_mm.transform(X_test)
+    mnb = MultinomialNB()
+    mnb.fit(X_train_mn, y_train)
+    
+    # --- Gaussian NB ---
+    scaler_ss = StandardScaler()
+    X_train_g = scaler_ss.fit_transform(X_train)
+    X_test_g  = scaler_ss.transform(X_test)
+    gnb = GaussianNB()
+    gnb.fit(X_train_g, y_train)
+    
+    # --- Bernoulli NB ---
+    X_train_bn = X_train.copy()
+    for col in features:
+        median_val = X_train[col].median()
+        X_train_bn[col] = (X_train[col] >= median_val).astype(int)
+    bnb = BernoulliNB()
+    bnb.fit(X_train_bn, y_train)
+        """, language="python")
+ 
+    st.markdown("📌 [View Full Code on GitHub](https://github.com/Vinay-15/NASA_ESONET_Climate_Analysis/blob/main/NASA_climate_analysis-2.ipynb)")
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # (d) Results
+    # ----------------------------
+    st.subheader("📈 Results")
+ 
+    # --- Multinomial NB ---
+    st.markdown("### 🔵 Multinomial Naive Bayes")
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/cm_multinomial_nb.png", use_container_width=True)
+    with col2:
+        st.metric("Accuracy", "75.6%")
+        st.write("""
+        Multinomial NB achieved **75.6% accuracy**. It performed best on 
+        **Low Severity** events (100% recall) but struggled with 
+        **Moderate Severity**, misclassifying 6 out of 15 samples. 
+        This is expected since MNB is designed for count-based data 
+        and our scaled continuous features don't perfectly fit its assumptions.
+        """)
+ 
+    st.markdown("---")
+ 
+    # --- Gaussian NB ---
+    st.markdown("### 🟢 Gaussian Naive Bayes")
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/cm_gaussian_nb.png", use_container_width=True)
+    with col2:
+        st.metric("Accuracy", "88.9%")
+        st.write("""
+        Gaussian NB achieved the **highest accuracy at 88.9%**. It correctly 
+        classified all Low Severity events and performed strongly across all 
+        classes. Only 5 out of 45 test samples were misclassified. GNB's 
+        assumption of normally distributed features aligned well with the 
+        continuous climate data in this project.
+        """)
+ 
+    st.markdown("---")
+ 
+    # --- Bernoulli NB ---
+    st.markdown("### 🟠 Bernoulli Naive Bayes")
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/cm_bernoulli_nb.png", use_container_width=True)
+    with col2:
+        st.metric("Accuracy", "77.8%")
+        st.write("""
+        Bernoulli NB achieved **77.8% accuracy**. Like MNB, it correctly 
+        identified all Low Severity events but had difficulty distinguishing 
+        Moderate from High Severity. The binarization step (converting values 
+        to 0/1) loses granular information, which limits the model's ability 
+        to capture fine differences between severity levels.
+        """)
+ 
+    st.markdown("---")
+ 
+    # --- Comparison ---
+    st.markdown("### 📊 Naive Bayes Model Comparison")
+ 
+
+    viza_block(
+        "images/nb_comparison.png",
+        "Accuracy Comparison Across All Three NB Models",
+        """
+    """)
+
+ 
+    st.markdown("""
+    | Model            | Accuracy | Best At                        | Weakness                          |
+    |------------------|----------|--------------------------------|-----------------------------------|
+    | Multinomial NB   | 75.6%    | Low Severity (100% recall)     | Moderate Severity confusion       |
+    | Gaussian NB      | 88.9%    | All classes (balanced)         | Minor High Severity misses        |
+    | Bernoulli NB     | 77.8%    | Low Severity (100% recall)     | Information loss from binarization|
+    """)
+ 
+    st.info("""
+    **Why Gaussian NB performed best:**
+    
+    Gaussian NB assumes features follow a normal distribution, which is a 
+    reasonable assumption for continuous climate measurements like latitude, 
+    longitude, precipitation, and month. The other two models required 
+    transformations (scaling to [0,1] or binarizing) that reduced the 
+    information available to the classifier.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # (e) Conclusions
+    # ----------------------------
+    st.subheader("✅ Conclusions")
+ 
+    st.info("""
+    **Key Findings from Naive Bayes Analysis:**
+ 
+    1. **Gaussian NB is the best-performing NB model** for this dataset, achieving 
+       88.9% accuracy in predicting wildfire severity from geographic and 
+       precipitation features alone.
+ 
+    2. **Geographic location and precipitation are meaningful predictors** of 
+       wildfire severity. The models successfully learned that certain latitudes, 
+       longitudes, seasons, and rainfall patterns are associated with different 
+       fire risk levels.
+ 
+    3. **Low Severity wildfires are the easiest to classify** — all three models 
+       achieved 100% recall for this class, suggesting these events have distinct 
+       geographic and precipitation signatures.
+ 
+    4. **Moderate Severity is hardest to distinguish** from other classes, which 
+       makes sense since it represents the middle ground between extremes.
+ 
+    5. **Choosing the right NB variant matters.** The same data produced accuracies 
+       ranging from 75.6% to 88.9% depending on the assumptions made about 
+       feature distributions. This highlights the importance of matching the 
+       model to the data characteristics.
+    """)
+ 
+    st.success("""
+    **Prediction Insight:** Using only latitude, longitude, month, and 
+    precipitation, we can predict wildfire severity with up to 88.9% accuracy. 
+    This suggests that geographic and seasonal patterns play a significant role 
+    in determining how severe a wildfire event becomes.
+    """)
+
+
+
+
+
+
+
+
+
+
+
+
+# decision tree
+
+with tab8:
+ 
+    st.header("🌳 Decision Tree Classification")
+ 
+    # ----------------------------
+    # (a) Overview
+    # ----------------------------
+    st.subheader("🔍 Overview: What are Decision Trees?")
+ 
+    st.info("""
+    A **Decision Tree (DT)** is a supervised machine learning algorithm that learns 
+    to classify data by splitting it into branches based on feature values, forming 
+    a tree-like structure of decisions. At the top of the tree is the **root node**, 
+    which represents the first and most important feature split. From the root, the 
+    data flows down through **internal nodes** (additional decision points) until it 
+    reaches **leaf nodes**, which represent the final predicted class. Each split in 
+    the tree is chosen to best separate the data into groups that are as pure as 
+    possible, meaning each group ideally contains only one class. Decision Trees are 
+    popular because they are easy to visualize, interpret, and explain to non-technical 
+    audiences. They can handle both numerical and categorical data without requiring 
+    extensive preprocessing like scaling or normalization. Decision Trees are widely 
+    used in medical diagnosis, fraud detection, customer segmentation, and environmental 
+    risk classification. However, they can be prone to **overfitting** if the tree grows 
+    too deep, which is why hyperparameters like `max_depth` and `min_samples_leaf` are 
+    used to control tree complexity. In this project, Decision Trees were used to classify 
+    wildfire severity levels based on geographic and precipitation features.
+    """)
+ 
+    st.markdown("---")
+ 
+    col1, col2 = st.columns(2)
+ 
+    with col1:
+        st.info("""
+        **📏 Gini Impurity**
+ 
+        Gini Impurity is one of the two main criteria used by Decision Trees to evaluate 
+        the quality of a split at each node. It measures how often a randomly chosen element 
+        from a set would be incorrectly classified if it were labeled randomly according to 
+        the distribution of labels in that set. A Gini value of **0** means the node is 
+        perfectly pure — all samples belong to one class. A higher Gini value means the node 
+        contains a more mixed population of classes. The formula for Gini Impurity is:
+ 
+        `Gini = 1 - Σ(pᵢ)²`
+ 
+        where `pᵢ` is the proportion of samples belonging to class `i`. For example, if a 
+        node contains 50% class A and 50% class B, the Gini is `1 - (0.5² + 0.5²) = 0.5`, 
+        which is the maximum impurity for a binary split. If the node is 100% class A, the 
+        Gini is `1 - (1.0²) = 0.0`, which is perfectly pure. The Decision Tree algorithm 
+        tries every possible feature and threshold combination at each node, calculates the 
+        Gini for each resulting child node, and picks the split that produces the lowest 
+        weighted average Gini across the children.
+        """)
+ 
+    with col2:
+        st.info("""
+        **📐 Entropy & Information Gain**
+ 
+        Entropy is the second main criterion for evaluating splits in Decision Trees, 
+        borrowed from information theory. It measures the amount of disorder or uncertainty 
+        in a set of labels. A node where all samples belong to one class has **entropy = 0** 
+        (no uncertainty), while a node with an equal mix of classes has the highest entropy. 
+        The formula for Entropy is:
+ 
+        `Entropy = -Σ pᵢ × log₂(pᵢ)`
+ 
+        **Information Gain** is the reduction in entropy achieved by splitting the data on a 
+        particular feature. It is calculated as the entropy of the parent node minus the 
+        weighted average entropy of the child nodes after the split. The feature and threshold 
+        that produce the **highest Information Gain** are selected for the split. For example, 
+        if a parent node has entropy 1.0 and splitting on latitude produces children with 
+        weighted entropy 0.6, the Information Gain is 0.4. Higher Information Gain means the 
+        split does a better job of separating the classes. Both Gini and Entropy generally 
+        produce similar trees, but Entropy can sometimes create slightly more balanced splits 
+        because it penalizes impurity more aggressively.
+        """)
+ 
+    st.markdown("---")
+ 
+    st.subheader("📌 Gini vs Entropy — Small Example")
+ 
+    st.info("""
+    **Example: Splitting 10 wildfire events by latitude**
+ 
+    Suppose we have 10 events: 5 High Severity and 5 Low Severity. We consider splitting 
+    at latitude = 30°.
+ 
+    **Left child (latitude ≤ 30°):** 4 High, 1 Low → 5 samples  
+    **Right child (latitude > 30°):** 1 High, 4 Low → 5 samples
+ 
+    **Gini Calculation:**
+    - Left Gini = 1 - (4/5)² - (1/5)² = 1 - 0.64 - 0.04 = **0.32**
+    - Right Gini = 1 - (1/5)² - (4/5)² = 1 - 0.04 - 0.64 = **0.32**
+    - Weighted Gini = (5/10 × 0.32) + (5/10 × 0.32) = **0.32**
+ 
+    **Entropy & Information Gain Calculation:**
+    - Parent Entropy = -0.5 × log₂(0.5) - 0.5 × log₂(0.5) = **1.0**
+    - Left Entropy = -4/5 × log₂(4/5) - 1/5 × log₂(1/5) = **0.722**
+    - Right Entropy = -1/5 × log₂(1/5) - 4/5 × log₂(4/5) = **0.722**
+    - Weighted Child Entropy = (5/10 × 0.722) + (5/10 × 0.722) = **0.722**
+    - **Information Gain = 1.0 - 0.722 = 0.278**
+ 
+    The positive Information Gain of 0.278 tells us this split reduces uncertainty by 
+    about 28%, making it a useful division of the data.
+    """)
+ 
+    st.markdown("---")
+ 
+    st.subheader("♾️ Why Infinite Trees Are Possible")
+ 
+    st.info("""
+    It is generally possible to create an **infinite number of different decision trees** 
+    from the same dataset because there are countless ways to configure the tree structure. 
+    First, at every node the algorithm can choose from any feature and any threshold value 
+    to split on, and since continuous features like latitude or precipitation have infinitely 
+    many possible split points, the number of candidate trees is unbounded. Second, the 
+    **order** in which features are selected matters — choosing latitude first versus longitude 
+    first produces entirely different tree structures even if both achieve similar accuracy. 
+    Third, hyperparameters like `max_depth`, `min_samples_split`, `min_samples_leaf`, and 
+    `random_state` all change which branches are grown and which are pruned, leading to 
+    different final trees. Fourth, using different splitting criteria (Gini vs Entropy) can 
+    produce different split decisions at each node. Fifth, random subsampling of training 
+    data or features (as in Random Forests) generates yet more tree variations. Even small 
+    changes to the random seed can cause the algorithm to break ties differently when two 
+    features produce equally good splits, resulting in a completely different tree. This is 
+    why in this project we deliberately built three trees with different configurations — to 
+    demonstrate how the same data can produce structurally different models with different 
+    root nodes, depths, and accuracy levels.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # (b) Data Preparation
+    # ----------------------------
+    st.subheader("⚙️ Data Preparation")
+ 
+    st.info("""
+    The data preparation for Decision Trees followed the same pipeline established in the 
+    Naive Bayes section, ensuring a fair and consistent comparison across all models. The 
+    target variable is **wildfire severity** (Low, Moderate, High), created from a composite 
+    risk score combining temperature, humidity, and wind speed. The features used for 
+    prediction are **latitude, longitude, month, and precipitation** — these are independent 
+    of the variables used to construct the label, preventing data leakage. One of the 
+    advantages of Decision Trees is that they do **not require feature scaling** or 
+    normalization, unlike Naive Bayes models which needed MinMaxScaler, StandardScaler, or 
+    binarization. The raw feature values are used directly, and the tree algorithm finds 
+    optimal split thresholds on the original scale. The dataset was split into **70% training** 
+    (105 samples) and **30% testing** (45 samples) using stratified sampling to maintain 
+    equal class proportions. The training and testing sets are completely **disjoint** — no 
+    sample appears in both sets. This disjoint property is critical because if the model saw 
+    test data during training, accuracy would be artificially inflated and the model would 
+    not generalize to new unseen data. Stratification ensures that each severity class has 
+    equal representation in both sets (35 training, 15 testing per class), preventing the 
+    model from being biased toward the majority class.
+    """)
+ 
+    st.image("images/dt_train_test_sample.png",
+             caption="Training and Testing Set Samples — Same Disjoint Split as Naive Bayes",
+             use_container_width=True)
+ 
+    st.markdown("📌 [View Data Preparation Code on GitHub](https://github.com/Vinay-15/NASA_ESONET_Climate_Analysis/blob/main/NASA_climate_analysis-2.ipynb)")
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # (c) Code
+    # ----------------------------
+    st.subheader("💻 Decision Tree Implementation Code")
+ 
+    st.info("""
+    Three different Decision Tree classifiers were built using **Scikit-Learn's 
+    DecisionTreeClassifier**. Each tree was configured with different hyperparameters 
+    to produce structurally different models with different root nodes, depths, and 
+    accuracy levels. Tree 1 uses the Gini criterion with a maximum depth of 4, Tree 2 
+    uses the Entropy criterion with a maximum depth of 5, and Tree 3 uses Gini with a 
+    shallower depth of 3 and a minimum leaf size of 5. Different random seeds were also 
+    used to encourage different tie-breaking behavior during training. The trees were 
+    visualized using Scikit-Learn's `plot_tree` function, which shows every split decision, 
+    the Gini or Entropy value at each node, the number of samples, and the predicted class. 
+    Feature importance was extracted from the best-performing tree to understand which 
+    geographic and climate variables contribute most to severity prediction. The code also 
+    generates confusion matrices for each tree to evaluate classification performance 
+    across all three severity levels.
+    """)
+ 
+    st.code("""
+    from sklearn.tree import DecisionTreeClassifier, plot_tree
+    from sklearn.metrics import accuracy_score, classification_report, ConfusionMatrixDisplay
+    
+    features = ["latitude", "longitude", "month", "precip"]
+    # X_train, X_test, y_train, y_test already created from stratified split
+    
+    # Tree 1: Gini criterion, max_depth=4
+    dt1 = DecisionTreeClassifier(criterion="gini", max_depth=4, random_state=42)
+    dt1.fit(X_train, y_train)
+    y_pred_dt1 = dt1.predict(X_test)
+    acc_dt1 = accuracy_score(y_test, y_pred_dt1)
+    
+    # Tree 2: Entropy criterion, max_depth=5
+    dt2 = DecisionTreeClassifier(criterion="entropy", max_depth=5, random_state=42)
+    dt2.fit(X_train, y_train)
+    y_pred_dt2 = dt2.predict(X_test)
+    acc_dt2 = accuracy_score(y_test, y_pred_dt2)
+    
+    # Tree 3: Gini, max_depth=3, min_samples_leaf=5, different seed
+    dt3 = DecisionTreeClassifier(criterion="gini", max_depth=3, 
+                                min_samples_leaf=5, random_state=99)
+    dt3.fit(X_train[features[::-1]], y_train)  # reversed feature order
+    y_pred_dt3 = dt3.predict(X_test[features[::-1]])
+    acc_dt3 = accuracy_score(y_test, y_pred_dt3)
+    
+    # Visualize trees
+    plot_tree(dt1, feature_names=features, class_names=le.classes_,
+          filled=True, rounded=True)
+    """, language="python")
+ 
+    st.markdown("📌 [View Full Decision Tree Code on GitHub](https://github.com/Vinay-15/NASA_ESONET_Climate_Analysis/blob/main/NASA_climate_analysis-2.ipynb)")
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # (d) Results
+    # ----------------------------
+    st.subheader("📈 Results")
+ 
+    # --- Tree 1 ---
+    st.markdown("### 🟣 Decision Tree 1 — Gini, max_depth=4")
+ 
+    st.image("images/dt1_tree.png",
+             caption="Decision Tree 1 — Full Tree Visualization (Gini, depth=4)",
+             use_container_width=True)
+ 
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/dt1_cm.png", use_container_width=True)
+    with col2:
+        st.metric("Accuracy", "71.1%")
+        st.write("""
+        Decision Tree 1 was built using the **Gini impurity** criterion with a maximum 
+        depth of 4 and achieved the highest accuracy among all three trees at **71.1%**. 
+        The tree correctly classified 32 out of 45 test samples across the three severity 
+        classes. Looking at the confusion matrix, the model performed best on **Moderate 
+        Severity** events with 11 correct predictions out of 15, and reasonably well on 
+        **High Severity** with 11 correct out of 15. However, **Low Severity** proved 
+        more challenging with only 10 correct out of 15, with 5 samples being misclassified 
+        as Moderate Severity. The root node of this tree splits on **latitude**, confirming 
+        that geographic location is the most discriminative feature for wildfire severity 
+        prediction. The tree visualization shows that latitude and longitude dominate the 
+        upper levels of the tree, while month and precipitation appear in deeper splits 
+        for finer distinctions. The depth of 4 provides a good balance between model 
+        complexity and generalization, capturing important patterns without overfitting 
+        to training noise. This tree serves as the baseline for comparison with the other 
+        two configurations.
+        """)
+ 
+    st.markdown("---")
+ 
+    # --- Tree 2 ---
+    st.markdown("### 🔴 Decision Tree 2 — Entropy, max_depth=5")
+ 
+    st.image("images/dt2_tree.png",
+             caption="Decision Tree 2 — Full Tree Visualization (Entropy, depth=5)",
+             use_container_width=True)
+ 
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/dt2_cm.png", use_container_width=True)
+    with col2:
+        st.metric("Accuracy", "66.7%")
+        st.write("""
+        Decision Tree 2 was built using the **Entropy** criterion with a deeper maximum 
+        depth of 5 and achieved **66.7% accuracy**, lower than Tree 1 despite having a 
+        more complex structure. This is a clear example of **overfitting** — the deeper 
+        tree learned very specific patterns from the training data that did not generalize 
+        well to the test set. The confusion matrix reveals that the model correctly 
+        classified 12 out of 15 High Severity events, which is actually better than Tree 1 
+        for that class. However, it performed significantly worse on **Low Severity** (only 
+        10 correct) and **Moderate Severity** (only 8 correct), with 5 Moderate events 
+        being misclassified as High Severity. The additional depth allowed the tree to 
+        create very narrow, specific rules that fit training noise rather than true patterns. 
+        The tree visualization shows a much larger and more complex structure with many 
+        more leaf nodes compared to Tree 1. The root node again splits on **latitude**, 
+        consistent with Tree 1, but the subsequent splits differ due to the Entropy 
+        criterion's different sensitivity to class imbalance at each node. This result 
+        demonstrates that a deeper and more complex model does not always produce better 
+        predictions, and that simpler trees can sometimes outperform their deeper counterparts.
+        """)
+ 
+    st.markdown("---")
+ 
+    # --- Tree 3 ---
+    st.markdown("### 🟢 Decision Tree 3 — Gini, max_depth=3, min_leaf=5")
+ 
+    st.image("images/dt3_tree.png",
+             caption="Decision Tree 3 — Full Tree Visualization (Gini, depth=3, different root)",
+             use_container_width=True)
+ 
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/dt3_cm.png", use_container_width=True)
+    with col2:
+        st.metric("Accuracy", "64.4%")
+        st.write("""
+        Decision Tree 3 was built with the **Gini criterion**, a shallower maximum depth 
+        of 3, a minimum of 5 samples per leaf node, and a different random seed (99) to 
+        encourage structural variation. It achieved the lowest accuracy at **64.4%**, 
+        classifying 29 out of 45 test samples correctly. The `min_samples_leaf=5` constraint 
+        prevents the tree from creating overly specific leaf nodes, resulting in broader and 
+        more generalized decision boundaries. The confusion matrix shows strong performance 
+        on **High Severity** (11 correct out of 15) and **Moderate Severity** (10 correct), 
+        but poor performance on **Low Severity** with only 8 correct and 7 samples misclassified 
+        as Moderate Severity. The root node of this tree also splits on **latitude**, consistent 
+        with the other two trees, which reinforces that latitude is the single most important 
+        feature regardless of tree configuration. The shallower depth of 3 means the tree has 
+        fewer decision nodes and cannot capture as many fine-grained patterns as Trees 1 and 2. 
+        While this tree has the lowest accuracy, its simpler structure makes it the most 
+        interpretable and least prone to overfitting — it would likely perform more consistently 
+        on completely new data from different time periods or regions.
+        """)
+ 
+    st.markdown("---")
+ 
+    # --- Feature Importance ---
+    st.markdown("### 📊 Feature Importance Analysis")
+ 
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/dt_feature_importance.png", use_container_width=True)
+    with col2:
+        st.write("""
+        Feature importance was extracted from Tree 1 (the best-performing model at 71.1% 
+        accuracy) to understand which variables contribute most to wildfire severity 
+        classification. **Latitude** is by far the most important feature with an importance 
+        score exceeding 0.50, meaning more than half of the tree's decision-making power 
+        comes from geographic latitude alone. This makes physical sense because latitude 
+        determines a region's climate zone, vegetation type, and solar exposure — all critical 
+        factors in wildfire behavior. **Longitude** is the second most important feature with 
+        a score around 0.33, reflecting that east-west positioning captures continental vs 
+        coastal climate differences that affect fire conditions. Together, latitude and longitude 
+        account for over 83% of the model's predictive power, showing that **geographic location 
+        is the dominant factor** in wildfire severity. **Month** contributes about 10% of the 
+        importance, capturing seasonal patterns in wildfire activity. **Precipitation** has 
+        the smallest importance at roughly 2%, which is surprising but suggests that once 
+        geographic location is known, precipitation adds relatively little additional 
+        information for severity prediction in this dataset.
+        """)
+ 
+    st.markdown("---")
+ 
+    # --- Comparison ---
+    st.markdown("### 📊 Decision Tree Model Comparison")
+ 
+    st.image("images/dt_comparison.png",
+             caption="Accuracy Comparison Across All Three Decision Trees",
+             use_container_width=True)
+ 
+    st.markdown("""
+    | Tree Configuration                    | Criterion | Max Depth | Root Feature | Accuracy |
+    |---------------------------------------|-----------|-----------|-------------|----------|
+    | Tree 1 (Gini, d=4)                    | Gini      | 4         | Latitude    | 71.1%    |
+    | Tree 2 (Entropy, d=5)                 | Entropy   | 5         | Latitude    | 66.7%    |
+    | Tree 3 (Gini, d=3, leaf≥5)            | Gini      | 3         | Latitude    | 64.4%    |
+    """)
+ 
+    st.info("""
+    **Key Observations from the Comparison:**
+ 
+    All three trees selected **latitude** as the root node, confirming it is the most 
+    discriminative feature regardless of the splitting criterion or hyperparameters used. 
+    Tree 1 with Gini criterion and depth 4 achieved the best accuracy at 71.1%, suggesting 
+    that a moderate depth provides the best trade-off between underfitting and overfitting 
+    for this dataset size. Tree 2 with Entropy and depth 5 actually performed worse despite 
+    being more complex, demonstrating that deeper trees are not always better — the additional 
+    depth led to overfitting on the 105-sample training set. Tree 3 with the shallowest depth 
+    of 3 had the lowest accuracy but is the most interpretable and robust model. The accuracy 
+    spread of 64.4% to 71.1% across three different configurations shows that Decision Trees 
+    are moderately sensitive to hyperparameter choices. Overall, Decision Trees achieved lower 
+    accuracy than Gaussian Naive Bayes (88.9%) on this dataset, suggesting that the probabilistic 
+    approach of GNB better captures the relationships in this climate data.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # (e) Conclusions
+    # ----------------------------
+    st.subheader("✅ Conclusions")
+ 
+    st.info("""
+    **Key Findings from Decision Tree Analysis:**
+ 
+    1. **Latitude is the most important feature** for predicting wildfire severity, selected 
+       as the root node by all three trees regardless of criterion or configuration. This 
+       confirms that geographic location is the primary determinant of fire risk, which aligns 
+       with domain knowledge about how latitude influences climate zones, vegetation, and 
+       solar radiation patterns.
+ 
+    2. **Geographic features (latitude + longitude) dominate** the model's predictive power, 
+       accounting for over 83% of feature importance in the best-performing tree. This suggests 
+       that knowing where a wildfire occurs tells us more about its likely severity than knowing 
+       the season or local precipitation levels.
+ 
+    3. **Moderate tree depth performs best** — Tree 1 (depth=4) outperformed both the deeper 
+       Tree 2 (depth=5) and the shallower Tree 3 (depth=3). This illustrates the classic 
+       bias-variance tradeoff: too shallow and the model underfits, too deep and it overfits.
+ 
+    4. **Decision Trees are interpretable but less accurate than Gaussian NB** on this dataset. 
+       The best Decision Tree achieved 71.1% compared to Gaussian NB's 88.9%. However, Decision 
+       Trees provide clear, visual explanations of how predictions are made, which is valuable 
+       for communicating results to stakeholders.
+ 
+    5. **Infinite tree configurations are possible** from the same data, and even small changes 
+       to hyperparameters (depth, criterion, minimum leaf size, random seed) produce structurally 
+       different trees with different accuracy levels, reinforcing the importance of 
+       hyperparameter tuning in machine learning.
+    """)
+ 
+    st.success("""
+    **Prediction Insight:** Decision Trees reveal that wildfire severity is primarily driven 
+    by **where** the fire occurs (latitude and longitude), with seasonal timing (month) and 
+    local precipitation playing secondary roles. This geographic dominance suggests that 
+    region-specific fire management strategies may be more effective than one-size-fits-all 
+    approaches based solely on weather conditions.
+    """)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Regression
+
+
+with tab9:
+ 
+    st.header("📈 Regression Analysis")
+ 
+    # ----------------------------
+    # (a) Define Linear Regression
+    # ----------------------------
+    st.subheader("🔍 What is Linear Regression?")
+ 
+    st.info("""
+    **Linear Regression** is a supervised learning algorithm that models the relationship 
+    between a continuous dependent variable (target) and one or more independent variables 
+    (features) by fitting a straight line through the data. The goal is to find the line 
+    (or hyperplane in multiple dimensions) that minimizes the sum of squared differences 
+    between the predicted values and the actual values, a method known as **Ordinary Least 
+    Squares (OLS)**. The equation takes the form `y = β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ`, 
+    where `β₀` is the intercept and `β₁...βₙ` are the coefficients that represent how much 
+    each feature contributes to the prediction. Linear regression assumes a linear relationship 
+    between features and target, that residuals are normally distributed, and that features 
+    are not highly correlated with each other (no multicollinearity). It is one of the most 
+    widely used algorithms in statistics and machine learning due to its simplicity, 
+    interpretability, and efficiency. Common applications include predicting house prices, 
+    stock trends, sales forecasting, and any scenario where the output is a continuous number. 
+    The model's performance is typically evaluated using metrics like R-squared, Mean Squared 
+    Error (MSE), and Root Mean Squared Error (RMSE). Linear regression can only predict 
+    continuous numerical outcomes — it cannot directly handle classification tasks where the 
+    output is a category label. For classification problems, we turn to **Logistic Regression**, 
+    which adapts the linear approach to produce probability-based class predictions.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # (b) Define Logistic Regression
+    # ----------------------------
+    st.subheader("🔍 What is Logistic Regression?")
+ 
+    st.info("""
+    **Logistic Regression** is a supervised classification algorithm that predicts the 
+    probability that an input belongs to a particular class, despite having "regression" 
+    in its name. Instead of predicting a continuous value like linear regression, logistic 
+    regression outputs a probability between 0 and 1, which is then mapped to a class label 
+    using a decision threshold (typically 0.5). It achieves this by applying the **Sigmoid 
+    (logistic) function** to a linear combination of input features, transforming the output 
+    from an unbounded range into the [0, 1] probability range. The model learns coefficients 
+    for each feature that maximize the likelihood of correctly classifying the training data, 
+    a process called **Maximum Likelihood Estimation (MLE)**. For binary classification, 
+    logistic regression draws a decision boundary that separates two classes, while for 
+    multi-class problems (like our three severity levels), it can use strategies like 
+    **one-vs-rest** or **multinomial** (softmax) to handle multiple classes simultaneously. 
+    Logistic regression is widely used in medical diagnosis (disease vs. healthy), spam 
+    detection (spam vs. not spam), credit scoring (approve vs. reject), and environmental 
+    classification. It is computationally efficient, works well with linearly separable data, 
+    and produces interpretable probability outputs that allow stakeholders to understand 
+    prediction confidence. Unlike Decision Trees, logistic regression assumes a linear 
+    relationship between features and the log-odds of the outcome, which can be a limitation 
+    for highly nonlinear data. In this project, logistic regression was used to classify 
+    wildfire severity levels using geographic and precipitation features.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # (c) Similarities and Differences
+    # ----------------------------
+    st.subheader("🔄 How Are They Similar and Different?")
+ 
+    col1, col2 = st.columns(2)
+ 
+    with col1:
+        st.info("""
+        **✅ Similarities**
+ 
+        Both linear and logistic regression are **supervised learning** algorithms that learn 
+        from labeled training data to make predictions on new unseen data. At their core, both 
+        models compute a **linear combination** of input features — they multiply each feature 
+        by a learned coefficient and sum the results to produce an intermediate value. Both 
+        algorithms are **parametric models**, meaning they assume a specific functional form 
+        for the relationship between features and output, and both learn a fixed set of 
+        parameters (coefficients) during training. Both methods benefit from **feature scaling** 
+        to improve convergence speed and numerical stability during optimization. They are both 
+        interpretable models where the magnitude and sign of each coefficient directly indicate 
+        how much and in which direction each feature influences the prediction. Both can handle 
+        multiple input features simultaneously and can be extended with regularization techniques 
+        (L1/Lasso, L2/Ridge) to prevent overfitting. Both are foundational algorithms taught in 
+        every machine learning curriculum and serve as important baselines before trying more 
+        complex models. Additionally, both assume that the input features are reasonably 
+        independent of each other and that there is a meaningful relationship between the 
+        features and the target variable.
+        """)
+ 
+    with col2:
+        st.info("""
+        **❌ Differences**
+ 
+        The fundamental difference is in **what they predict**: linear regression predicts a 
+        continuous numerical value (e.g., temperature = 27.5°C), while logistic regression 
+        predicts a categorical class label through probabilities (e.g., High Severity with 
+        85% probability). Linear regression uses **Ordinary Least Squares** to minimize the 
+        sum of squared errors, while logistic regression uses **Maximum Likelihood Estimation** 
+        to maximize the probability of correct classification. Linear regression produces 
+        unbounded output from negative infinity to positive infinity, while logistic regression 
+        applies the **Sigmoid function** to constrain output between 0 and 1. The loss function 
+        differs: linear regression uses Mean Squared Error, while logistic regression uses 
+        **cross-entropy loss** (log loss). Linear regression assumes normally distributed 
+        residuals, while logistic regression assumes the target follows a Bernoulli or 
+        multinomial distribution. Linear regression's output is directly the prediction, while 
+        logistic regression's output is a probability that requires a threshold to become a 
+        class label. Linear regression is evaluated with R², MSE, and RMSE, while logistic 
+        regression is evaluated with accuracy, precision, recall, F1-score, and confusion 
+        matrices. Finally, linear regression cannot handle classification tasks, while logistic 
+        regression cannot predict continuous values.
+        """)
+ 
+    st.markdown("""
+    | Aspect              | Linear Regression           | Logistic Regression              |
+    |---------------------|-----------------------------|----------------------------------|
+    | **Output**          | Continuous value             | Class probability (0 to 1)       |
+    | **Function**        | Linear (y = mx + b)         | Sigmoid applied to linear combo  |
+    | **Loss Function**   | Mean Squared Error           | Cross-Entropy (Log Loss)         |
+    | **Optimization**    | Ordinary Least Squares       | Maximum Likelihood Estimation    |
+    | **Use Case**        | Predict prices, quantities   | Classify categories, yes/no      |
+    | **Evaluation**      | R², MSE, RMSE               | Accuracy, Precision, Recall, F1  |
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # (d) Sigmoid Function
+    # ----------------------------
+    st.subheader("📐 Does Logistic Regression Use the Sigmoid Function?")
+ 
+    st.info("""
+    **Yes**, logistic regression fundamentally relies on the **Sigmoid function** (also called 
+    the logistic function) to transform its predictions into probabilities. The Sigmoid function 
+    is defined as `σ(z) = 1 / (1 + e^(-z))`, where `z` is the linear combination of input 
+    features (`z = β₀ + β₁x₁ + β₂x₂ + ...`). Without the Sigmoid, logistic regression would 
+    just be linear regression — it would output unbounded values that could be negative or 
+    greater than 1, which are meaningless as probabilities. The Sigmoid function maps any real 
+    number to the range (0, 1), making the output interpretable as the probability of belonging 
+    to the positive class. When `z` is very large and positive, the Sigmoid outputs a value 
+    close to 1 (high probability of positive class). When `z` is very large and negative, the 
+    Sigmoid outputs a value close to 0 (high probability of negative class). When `z = 0`, the 
+    Sigmoid outputs exactly 0.5, representing maximum uncertainty. The S-shaped curve of the 
+    Sigmoid is smooth and differentiable everywhere, which is essential for gradient-based 
+    optimization during model training. For multi-class problems like our three-class severity 
+    prediction, the Sigmoid is generalized to the **Softmax function**, which outputs a 
+    probability distribution across all classes that sums to 1. The Sigmoid's gradient 
+    (derivative) has a convenient mathematical property: `σ'(z) = σ(z) × (1 - σ(z))`, 
+    which simplifies the backpropagation calculations during training.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # (e) Maximum Likelihood Estimation
+    # ----------------------------
+    st.subheader("📊 How is Maximum Likelihood Connected to Logistic Regression?")
+ 
+    st.info("""
+    **Maximum Likelihood Estimation (MLE)** is the optimization method that logistic regression 
+    uses to learn its coefficients from training data, making it the mathematical engine behind 
+    the model. The core idea of MLE is to find the set of model parameters (coefficients) that 
+    make the observed training data most probable — in other words, the parameters that maximize 
+    the **likelihood function**. For logistic regression, the likelihood function is the product 
+    of all individual prediction probabilities: for each correctly classified sample, we want 
+    the predicted probability to be as close to 1 as possible, and for each incorrectly 
+    classified sample, as close to 0 as possible. In practice, we work with the **log-likelihood** 
+    (the natural logarithm of the likelihood) because products become sums, which are 
+    computationally easier to optimize and numerically more stable. The negative log-likelihood 
+    is equivalent to the **cross-entropy loss** function, which is minimized during training 
+    using gradient descent or more advanced optimizers like L-BFGS (Limited-memory 
+    Broyden–Fletcher–Goldfarb–Shanno). Unlike linear regression's OLS which has a closed-form 
+    solution, logistic regression's MLE requires iterative numerical optimization because the 
+    Sigmoid function makes the problem non-linear. At each iteration, the optimizer computes 
+    the gradient of the log-likelihood with respect to each coefficient and updates the 
+    coefficients in the direction that increases the likelihood. Convergence is reached when 
+    the changes between iterations become negligibly small, indicated by parameters like 
+    `max_iter` in Scikit-Learn. MLE ensures that the final model coefficients are statistically 
+    optimal — no other set of coefficients could explain the training data better under the 
+    logistic regression assumptions.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Coding: Multi-class Logistic Regression
+    # ----------------------------
+    st.subheader("💻 Logistic Regression Implementation")
+ 
+    st.info("""
+    Logistic Regression was applied to the same wildfire severity dataset used for Naive Bayes 
+    and Decision Trees, ensuring a fair comparison across all model families. The features used 
+    are **latitude, longitude, month, and precipitation**, and the target is the three-class 
+    severity label (Low, Moderate, High). The data was standardized using StandardScaler before 
+    fitting, as logistic regression's gradient-based optimization converges faster and more 
+    reliably with scaled features. The `multinomial` multi-class strategy with the `lbfgs` 
+    solver was used, which directly models all three classes simultaneously using the Softmax 
+    function rather than training separate binary classifiers. For the binary comparison, a 
+    subset containing only **Low Severity** and **Moderate Severity** events was created to 
+    directly compare Logistic Regression against Multinomial Naive Bayes on a two-class problem. 
+    These two adjacent severity levels were chosen because they are the hardest to distinguish, 
+    providing a more meaningful comparison than the easily separable Low vs High pair. The 
+    binary Logistic Regression used StandardScaler while the binary Multinomial NB used 
+    MinMaxScaler, each matching their respective model's requirements. Both models were 
+    evaluated on the same stratified test set to ensure an apples-to-apples comparison. All 
+    code was implemented using Scikit-Learn's `LogisticRegression` class with `max_iter=1000` 
+    to ensure convergence.
+    """)
+ 
+    st.code("""
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.preprocessing import StandardScaler, MinMaxScaler
+    from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay
+    
+    # Multi-class Logistic Regression
+    lr_multi = LogisticRegression(
+        multi_class="multinomial", solver="lbfgs",
+        max_iter=1000, random_state=42)
+    lr_multi.fit(X_train_g, y_train)   # X_train_g = StandardScaler transformed
+    y_pred_lr = lr_multi.predict(X_test_g)
+    acc_lr = accuracy_score(y_test, y_pred_lr)  # 97.8%
+    
+    # Binary: Low_Severity vs Moderate_Severity
+    top2 = ["Low_Severity", "Moderate_Severity"]
+    mask = combined_df["severity"].isin(top2)
+    X_binary = combined_df.loc[mask, features]
+    y_binary = LabelEncoder().fit_transform(combined_df.loc[mask, "severity"])
+    
+    # Binary Logistic Regression
+    lr_bin = LogisticRegression(max_iter=1000, random_state=42, C=0.5)
+    lr_bin.fit(X_train_bs, y_train_b)
+    
+    # Binary Multinomial NB
+    mnb_bin = MultinomialNB(alpha=2.0)
+    mnb_bin.fit(X_train_bmn, y_train_b)
+        """, language="python")
+ 
+    st.markdown("📌 [View Full Regression Code on GitHub](https://github.com/Vinay-15/NASA_ESONET_Climate_Analysis/blob/main/NASA_climate_analysis-2.ipynb)")
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Results: Multi-class LR
+    # ----------------------------
+    st.subheader("📈 Multi-class Logistic Regression Results")
+ 
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/lr_multiclass_cm.png", use_container_width=True)
+    with col2:
+        st.metric("Accuracy", "97.8%")
+        st.write("""
+        Multi-class Logistic Regression achieved an outstanding **97.8% accuracy**, correctly 
+        classifying 44 out of 45 test samples across all three wildfire severity levels. This 
+        is the highest accuracy achieved by any model in this project, significantly outperforming 
+        both Gaussian Naive Bayes (88.9%) and the best Decision Tree (71.1%). The confusion 
+        matrix reveals near-perfect classification: all 15 High Severity and all 15 Low Severity 
+        events were classified correctly with zero errors, and 14 out of 15 Moderate Severity 
+        events were correct with only a single sample misclassified as Low Severity. The model 
+        achieved perfect precision (1.00) for both High and Moderate Severity, meaning every 
+        sample it predicted as High or Moderate was actually that class. The recall was also 
+        perfect (1.00) for High and Low Severity, meaning it identified every single High and 
+        Low event without any misses. The only imperfection was one Moderate Severity event that 
+        was incorrectly labeled as Low, giving Moderate Severity a recall of 0.93. The F1-scores 
+        across all classes were 0.97 or higher, indicating excellent and balanced performance. 
+        This exceptional performance suggests that there are strong linear relationships between 
+        the geographic and precipitation features and the severity labels, which logistic 
+        regression's linear decision boundaries can capture effectively. The `lbfgs` optimizer 
+        converged within the 1000 iteration limit, confirming the model's stability.
+        """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Results: Binary Comparison
+    # ----------------------------
+    st.subheader("📊 Binary Classification: Logistic Regression vs Multinomial NB")
+ 
+    st.image("images/lr_binary_comparison.png",
+             caption="Binary Classification: Low Severity vs Moderate Severity",
+             use_container_width=True)
+ 
+    col1, col2 = st.columns(2)
+ 
+    with col1:
+        st.info("""
+        **Logistic Regression — Accuracy: 70.0%**
+ 
+        In the binary classification task comparing Low Severity against Moderate Severity 
+        events, Logistic Regression achieved **70.0% accuracy**, correctly classifying 21 out 
+        of 30 test samples. The confusion matrix shows that the model performed well on Low 
+        Severity with 13 correct out of 15, but struggled significantly with Moderate Severity, 
+        correctly identifying only 8 out of 15 while misclassifying 7 as Low Severity. This 
+        indicates that the linear decision boundary drawn by logistic regression tends to favor 
+        the Low Severity class, possibly because Low Severity events have more distinct geographic 
+        signatures. The regularization parameter C=0.5 added moderate regularization to prevent 
+        overfitting on this smaller binary subset. The drop from 97.8% (multi-class) to 70.0% 
+        (binary) is expected because Low and Moderate Severity are adjacent classes with 
+        overlapping feature distributions, making them inherently harder to separate than the 
+        three-class problem where High Severity provides additional contrast.
+        """)
+ 
+    with col2:
+        st.info("""
+        **Multinomial NB — Accuracy: 73.3%**
+ 
+        Multinomial Naive Bayes achieved **73.3% accuracy** on the same binary task, slightly 
+        outperforming Logistic Regression by 3.3 percentage points. The confusion matrix shows 
+        that MNB also correctly classified 13 out of 15 Low Severity events (same as LR), but 
+        performed better on Moderate Severity with 9 correct out of 15 compared to LR's 8. 
+        This means MNB misclassified only 6 Moderate events as Low, compared to LR's 7. The 
+        alpha=2.0 smoothing parameter helped MNB handle the limited training data by preventing 
+        zero-probability issues that can occur with small sample sizes. The fact that MNB 
+        outperformed LR on this binary task is notable because MNB achieved lower accuracy on 
+        the full three-class problem (75.6% vs 97.8%). This reversal suggests that Multinomial 
+        NB's probabilistic approach handles the overlapping distributions between adjacent 
+        severity classes slightly better than LR's linear boundary when only two classes are 
+        present.
+        """)
+ 
+    st.markdown("""
+    | Model                | Binary Accuracy | Strength                          | Weakness                        |
+    |----------------------|----------------|-----------------------------------|---------------------------------|
+    | Logistic Regression  | 70.0%          | Strong Low Severity detection     | Misclassifies Moderate as Low   |
+    | Multinomial NB       | 73.3%          | Better Moderate Severity recall   | Still struggles with overlap    |
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Conclusions
+    # ----------------------------
+    st.subheader("✅ Regression Conclusions")
+ 
+    st.info("""
+    **Key Findings from Logistic Regression Analysis:**
+ 
+    1. **Logistic Regression is the best overall model** in this project, achieving 97.8% 
+       accuracy on the three-class wildfire severity prediction task. Its linear decision 
+       boundaries effectively separate the severity levels based on latitude, longitude, month, 
+       and precipitation, outperforming all Naive Bayes variants and all Decision Tree 
+       configurations by a significant margin.
+ 
+    2. **The Sigmoid function and Maximum Likelihood Estimation** work together to produce 
+       well-calibrated probability predictions. The model doesn't just classify — it provides 
+       confidence scores that could be used for risk assessment, such as flagging events with 
+       borderline severity scores for closer monitoring.
+ 
+    3. **Adjacent severity classes are harder to separate** than the full three-class problem. 
+       Both LR (70.0%) and MNB (73.3%) showed reduced accuracy when tasked with distinguishing 
+       only Low from Moderate Severity, confirming that these middle classes have overlapping 
+       geographic and precipitation profiles.
+ 
+    4. **Multinomial NB slightly outperforms LR on binary classification** (73.3% vs 70.0%), 
+       suggesting that probabilistic models handle overlapping distributions between similar 
+       classes marginally better than linear boundary methods.
+ 
+    5. **Feature scaling is essential for logistic regression** — StandardScaler normalization 
+       ensured fast convergence and numerically stable coefficient estimation, contributing 
+       to the model's strong performance.
+    """)
+ 
+    st.success("""
+    **Prediction Insight:** Logistic Regression demonstrates that wildfire severity can be 
+    predicted with near-perfect accuracy (97.8%) using only four geographic and climate 
+    features. This has practical implications for early warning systems — given a fire's 
+    coordinates, the month, and local precipitation data, responders could quickly estimate 
+    the likely severity and allocate resources accordingly.
+    """)
+
+
+
+
+
+
+
+
+
+# all models
+
+
+with tab10:
+ 
+    st.header("🤖 Machine Learning Models — Complete Comparison")
+ 
+    # ----------------------------
+    # Overview
+    # ----------------------------
+    st.subheader("🔍 Overview of All Models Used")
+ 
+    st.info("""
+    Throughout this project, **seven different supervised classification models** were trained 
+    and evaluated on the same wildfire severity prediction task, using the same train/test 
+    split to ensure a fair and consistent comparison. The models span three major algorithm 
+    families: **Naive Bayes** (Multinomial, Gaussian, and Bernoulli), **Decision Trees** 
+    (three configurations with different criteria, depths, and constraints), and **Logistic 
+    Regression** (multinomial multi-class). All models were trained on 105 samples (70%) and 
+    tested on 45 samples (30%) with stratified sampling to maintain equal class representation. 
+    The target variable is wildfire severity (Low, Moderate, High), derived from a composite 
+    risk score of temperature, humidity, and wind speed. The prediction features are latitude, 
+    longitude, month, and precipitation — variables that are independent of the label 
+    construction. Each model family has different assumptions about the data: Naive Bayes 
+    assumes feature independence, Decision Trees learn hierarchical rules through recursive 
+    splitting, and Logistic Regression assumes linear relationships between features and 
+    log-odds. By comparing all seven models, we can determine which approach best captures 
+    the patterns in disaster-climate data and draw meaningful conclusions about the predictability 
+    of wildfire severity from geographic and meteorological features.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Grand Comparison Chart
+    # ----------------------------
+    st.subheader("📊 All Models — Accuracy Comparison")
+ 
+    st.image("images/all_models_comparison.png",
+             caption="Complete Accuracy Comparison Across All Seven Models",
+             use_container_width=True)
+ 
+    st.markdown("""
+    | Rank | Model                          | Family              | Accuracy |
+    |------|--------------------------------|---------------------|----------|
+    | 1    | Logistic Regression            | Logistic Regression | 97.8%    |
+    | 2    | Gaussian NB                    | Naive Bayes         | 88.9%    |
+    | 3    | Bernoulli NB                   | Naive Bayes         | 77.8%    |
+    | 4    | Multinomial NB                 | Naive Bayes         | 75.6%    |
+    | 5    | Decision Tree 1 (Gini, d=4)    | Decision Tree       | 71.1%    |
+    | 6    | Decision Tree 2 (Entropy, d=5) | Decision Tree       | 66.7%    |
+    | 7    | Decision Tree 3 (Gini, d=3)    | Decision Tree       | 64.4%    |
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Analysis by Family
+    # ----------------------------
+    st.subheader("📋 Analysis by Model Family")
+ 
+    col1, col2, col3 = st.columns(3)
+ 
+    with col1:
+        st.info("""
+        **🔵 Naive Bayes Family**
+        
+        Accuracy range: **75.6% — 88.9%**
+ 
+        Gaussian NB was the clear winner within the NB family, benefiting from the assumption 
+        that continuous features follow normal distributions. Bernoulli NB performed second 
+        best at 77.8% despite losing information through binarization. Multinomial NB came 
+        last at 75.6% because it is designed for count data, not continuous climate measurements. 
+        All three NB models perfectly classified Low Severity events, indicating this class 
+        has the most distinctive geographic signature. The NB family's strength lies in its 
+        computational efficiency and ability to work well with limited training data.
+        """)
+ 
+    with col2:
+        st.info("""
+        **🟣 Decision Tree Family**
+        
+        Accuracy range: **64.4% — 71.1%**
+ 
+        Decision Trees produced the lowest accuracies overall, with Tree 1 (Gini, depth=4) 
+        performing best at 71.1%. Interestingly, the deepest tree (depth=5) did not perform 
+        the best, demonstrating overfitting on the 105-sample training set. All three trees 
+        selected latitude as the root node, confirming its importance. The trees' main value 
+        is interpretability — they provide clear visual rules for how predictions are made. 
+        However, the small dataset size limits their ability to learn robust splitting rules 
+        that generalize well to unseen data.
+        """)
+ 
+    with col3:
+        st.info("""
+        **🔴 Logistic Regression**
+        
+        Accuracy: **97.8%**
+ 
+        Logistic Regression dramatically outperformed all other models, achieving near-perfect 
+        classification with only one error out of 45 test samples. Its success indicates that 
+        the relationship between geographic/precipitation features and severity labels is 
+        approximately linear in the feature space. The multinomial strategy with Softmax 
+        effectively modeled all three classes simultaneously. StandardScaler normalization 
+        ensured optimal coefficient estimation. Logistic Regression's combination of high 
+        accuracy, probabilistic outputs, and interpretable coefficients makes it the ideal 
+        model for this wildfire severity prediction task.
+        """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Which Model Works Best
+    # ----------------------------
+    st.subheader("🏆 Which Model Works Best for This Project?")
+ 
+    st.success("""
+    **🥇 Winner: Logistic Regression — 97.8% Accuracy**
+ 
+    Logistic Regression is the clear winner for wildfire severity prediction in this project, 
+    and the reasons go beyond just having the highest accuracy number. First, its 97.8% accuracy 
+    means it made only **one mistake** out of 45 test predictions, a level of performance that 
+    is practically usable for real-world applications. Second, unlike Decision Trees which 
+    create rigid threshold-based rules, Logistic Regression produces **smooth probability 
+    estimates** that can be used for risk scoring — a fire event predicted as "High Severity 
+    with 92% confidence" provides more actionable information than a simple label. Third, the 
+    model is **computationally efficient** — it trains in milliseconds and predicts instantly, 
+    making it suitable for real-time severity assessment during active wildfire events. Fourth, 
+    its coefficients are **directly interpretable** — positive coefficients for latitude mean 
+    that fires at higher latitudes tend to be classified differently than those near the equator. 
+    Fifth, the model's success confirms that the **geographic and seasonal features** chosen for 
+    this analysis are genuinely informative predictors of wildfire severity, validating the 
+    entire data science pipeline from data collection through feature engineering to modeling.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Key Takeaways
+    # ----------------------------
+    st.subheader("🧠 Key Takeaways from Model Comparison")
+ 
+    st.info("""
+    **1. Model choice matters significantly.** Accuracy ranged from 64.4% (worst Decision Tree) 
+    to 97.8% (Logistic Regression) — a 33.4 percentage point spread. Choosing the wrong model 
+    for your data can cost you a third of your predictive performance.
+ 
+    **2. Simpler assumptions can outperform complex structures.** Logistic Regression's simple 
+    linear boundaries beat Decision Trees' complex hierarchical rules because the underlying 
+    data relationships happen to be approximately linear.
+ 
+    **3. Feature preprocessing impacts results.** The same features produced different accuracies 
+    depending on how they were scaled (StandardScaler vs MinMaxScaler vs binarization), showing 
+    that data preparation is as important as model selection.
+ 
+    **4. Geographic features dominate.** Across all models, latitude and longitude were the most 
+    important predictors, confirming that where a wildfire occurs is the strongest indicator 
+    of its severity.
+ 
+    **5. More complexity doesn't mean better performance.** The deepest Decision Tree (depth=5) 
+    performed worse than the moderate one (depth=4), and the simplest probabilistic model 
+    (Logistic Regression) outperformed everything else.
+ 
+    **6. All models agree on easy cases.** Low Severity events were consistently well-classified 
+    across all seven models, suggesting these events have the most distinctive and separable 
+    feature profiles in the dataset.
+ 
+    **7. Moderate Severity is the hardest class.** Every model struggled most with Moderate 
+    Severity, which sits between the two extremes and shares feature characteristics with both 
+    neighboring classes.
+    """)
+
+>>>>>>> b6f1a36 (Add Decision Tree, Regression, and Models comparison tabs; update Naive Bayes section)
