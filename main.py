@@ -50,13 +50,13 @@ with tab1:
         st.header("📌 Project Overview")
 
         st.info("""
-                Natural disasters such as **wildfires, floods, storms, and volcanic eruptions** cause devastating environmental damage, economic disruption, and loss of human life across the world. Every year, communities face the consequences of these events, from destroyed ecosystems and infrastructure to long-term social and economic impacts.
-                
-                Climate conditions play a critical role in shaping the **occurrence, intensity, and spread** of natural disasters. Factors like **temperature, humidity, wind speed, and precipitation** directly influence how disasters form, evolve, and escalate. For example, low humidity and strong winds can intensify wildfires, while heavy rainfall and wind patterns can drive severe storms and flooding.
-                
-                This project aims to better understand these relationships by exploring how **local climate conditions** align with **real-world disaster events**. By integrating real-time disaster data from **NASA EONET** with climate observations from the **NASA POWER** API, the project connects where and when disasters occur with the environmental conditions surrounding them. This combined analysis helps uncover patterns that can support improved disaster awareness, risk assessment, and data-driven decision-making.
+        Natural disasters such as **wildfires, floods, storms, and volcanic eruptions** have far-reaching consequences that extend beyond immediate destruction. These events not only damage ecosystems and infrastructure but also disrupt economies, displace communities, and result in significant loss of human life. As the frequency and severity of such disasters continue to rise globally, understanding their underlying causes and patterns has become increasingly important for both preparedness and mitigation efforts.
 
+        A key factor influencing natural disasters is the surrounding **climate environment**. Variables such as **temperature, humidity, wind speed, and precipitation** play a crucial role in determining how disasters originate, evolve, and intensify. For instance, prolonged periods of high temperatures combined with low humidity can create ideal conditions for wildfires, while excessive rainfall and strong wind systems can contribute to severe storms and flooding. These environmental conditions often act as catalysts that amplify the scale and impact of disasters.
 
+        Despite the known relationship between climate and disasters, there is often a gap in effectively connecting **real-time disaster events** with the **specific climate conditions** that surround them. This project seeks to bridge that gap by integrating data from **NASA EONET**, which tracks natural disaster events globally, with climate data from the **NASA POWER API**, which provides detailed atmospheric and environmental measurements. By combining these two powerful data sources, the project enables a more comprehensive view of how environmental factors correlate with disaster occurrences.
+
+        Through this integrated analysis, the project aims to uncover meaningful patterns and insights that can enhance **disaster awareness, risk assessment, and decision-making**. By understanding how local climate conditions align with real-world events, stakeholders such as researchers, policymakers, and emergency response teams can make more informed decisions. Ultimately, this work contributes to building more resilient communities and improving strategies for anticipating and responding to natural disasters in a changing climate.
         """)
 
         st.subheader("🎯 Project Objectives")
