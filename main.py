@@ -283,56 +283,342 @@ with tab3:
 # --------------------------------------------------
 with tab11:
     st.header("📈 Results & Discussion")
-    if False:
-        st.write("""
-        The exploratory analysis revealed several key patterns
-        linking climate variables to disaster occurrences.
-        """)    
+ 
+    # ----------------------------
+    # Project Summary
+    # ----------------------------
+    st.subheader("🔍 Project Summary")
+ 
+    st.info("""
+    This project set out to explore whether climate and geographic variables could meaningfully 
+    predict and classify natural disaster events, specifically wildfire severity. The analysis 
+    followed a complete data science lifecycle: collecting data from NASA EONET and NASA POWER 
+    APIs, cleaning and merging the datasets, performing exploratory data analysis, applying 
+    unsupervised learning techniques (PCA, clustering, and association rule mining), and finally 
+    building and comparing seven supervised classification models across three algorithm families. 
+    The target variable — wildfire severity — was engineered from a composite risk score combining 
+    temperature, humidity, and wind speed, then binned into three balanced classes (Low, Moderate, 
+    and High Severity with 50 samples each). The prediction features were latitude, longitude, 
+    month, and precipitation, chosen specifically because they are independent of the label 
+    construction and represent genuinely useful information for severity prediction. All models 
+    were trained on the same 70/30 stratified split (105 training, 45 testing) to ensure a fair 
+    and consistent comparison across every method.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Key Results Overview
+    # ----------------------------
+    st.subheader("📊 Key Results Across All Analyses")
+ 
+    col1, col2 = st.columns(2)
+ 
+    with col1:
         st.info("""
-        Key observations from the exploratory analysis include:
+        **Unsupervised Learning Results**
+ 
+        **PCA** revealed that the first two principal components capture approximately 85% of 
+        the total variance in the climate-disaster dataset, and three components capture over 
+        94%. This indicates that the seven original variables share substantial redundancy and 
+        can be effectively summarized in a lower-dimensional space. Temperature and humidity 
+        emerged as the dominant contributors to the first principal component, confirming their 
+        central role in characterizing disaster environments. **K-Means clustering** with K=3 
+        produced the most interpretable groupings, separating events into hot-dry (wildfire-prone), 
+        high-moisture (storm/flood-prone), and cold/extreme clusters. The silhouette analysis 
+        confirmed K=2 as the optimal partition, but K=3 through K=5 revealed meaningful sub-structures. 
+        **Hierarchical clustering** validated the K-Means results through its dendrogram, which 
+        showed natural merge points consistent with 3-5 clusters. **DBSCAN** successfully identified 
+        outlier events that did not fit any major cluster pattern, highlighting extreme or unusual 
+        disaster conditions. **Association Rule Mining** uncovered strong co-occurrence patterns, 
+        such as the frequent pairing of high humidity with low temperature and the association 
+        between low wind speed and low precipitation, providing interpretable rules that complement 
+        the numerical outputs of PCA and clustering.
         """)
-
-        st.write("""
-        - Wildfires frequently occur under **high temperature and low humidity** conditions  
-        - Storm events are associated with **higher wind speed and precipitation**  
-        - Flood events show strong links to **extreme rainfall patterns**  
-        - Climate variables exhibit distinct distributions across disaster categories  
-        """)
-
+ 
+    with col2:
         st.info("""
-        These findings align with known physical processes and
-        validate the usefulness of climate data in disaster analysis.
+        **Supervised Learning Results**
+ 
+        Seven classification models were evaluated for predicting wildfire severity from geographic 
+        and precipitation features. **Logistic Regression** achieved the highest accuracy at 
+        **97.8%**, correctly classifying 44 out of 45 test samples with near-perfect precision and 
+        recall across all three severity classes. **Gaussian Naive Bayes** performed second best at 
+        **88.9%**, leveraging its assumption of normally distributed features to effectively model 
+        the continuous climate data. **Bernoulli NB** (77.8%) and **Multinomial NB** (75.6%) 
+        achieved moderate accuracies, with their lower performance attributable to information loss 
+        during binarization and scaling respectively. **Decision Trees** produced the lowest 
+        accuracies, ranging from **64.4% to 71.1%** across three configurations with different 
+        criteria, depths, and constraints. All three trees selected latitude as the root node, 
+        confirming geographic location as the single most discriminative feature for severity 
+        prediction. The feature importance analysis from the best Decision Tree showed that latitude 
+        and longitude together account for over 83% of predictive power, with month contributing 
+        roughly 10% and precipitation only about 2%. In the binary classification comparison 
+        between Logistic Regression and Multinomial NB on adjacent severity classes (Low vs 
+        Moderate), MNB slightly outperformed LR (73.3% vs 70.0%), suggesting probabilistic 
+        models handle overlapping class distributions marginally better.
         """)
-
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Discussion: What Worked
+    # ----------------------------
+    st.subheader("✅ What Worked Well")
+ 
+    st.info("""
+    Several aspects of this project produced strong and meaningful results that validate the 
+    overall approach. The **composite risk score** for label engineering proved to be an effective 
+    solution to the class imbalance problem — with 149 wildfires and only 1 volcanic event, 
+    direct category classification was impossible, but creating severity levels from temperature, 
+    humidity, and wind speed produced three balanced classes that allowed all models to learn 
+    meaningful patterns. The **feature independence design** — using latitude, longitude, month, 
+    and precipitation as predictors while excluding the variables used to create the label — 
+    successfully prevented data leakage and ensured that model accuracies reflect genuine 
+    predictive relationships rather than circular logic. The **stratified train/test split** 
+    maintained equal class proportions in both sets, giving every model the same fair chance 
+    at learning and being evaluated. **Logistic Regression's exceptional 97.8% accuracy** 
+    demonstrates that the relationship between geographic/seasonal features and wildfire severity 
+    is approximately linear, making it amenable to simple yet powerful linear models. The 
+    **consistency of latitude as the root node** across all three Decision Trees provides strong 
+    evidence that geographic position is the most important single factor in wildfire severity, 
+    a finding that is both statistically robust and physically interpretable. The **progression 
+    from unsupervised to supervised learning** allowed each stage to inform the next: PCA 
+    identified the most important variables, clustering revealed natural groupings, ARM 
+    discovered co-occurrence patterns, and classification models quantified predictive power.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Discussion: Limitations
+    # ----------------------------
+    st.subheader("⚠️ Limitations and Considerations")
+ 
+    st.info("""
+    While the results are promising, several limitations should be acknowledged when interpreting 
+    the findings. The **dataset size of 150 samples** is relatively small for machine learning, 
+    which means model performance estimates may have higher variance than those from larger 
+    datasets, and some models (particularly Decision Trees) may not have enough data to learn 
+    robust splitting rules. The **class imbalance in the original data** (149 wildfires, 1 volcano) 
+    required engineering a new target variable, which means the severity classification is a 
+    proxy rather than a ground-truth measurement of actual wildfire damage or impact. The 
+    **composite risk score weights** (0.4 for temperature, 0.35 for humidity, 0.25 for wind) 
+    were chosen based on domain knowledge but are not empirically optimized — different weights 
+    could produce different severity distributions and potentially different model rankings. 
+    **Logistic Regression's 97.8% accuracy** is notably higher than other models, which could 
+    indicate that the linear relationship between features and severity is partially an artifact 
+    of how the severity label was constructed from quantile binning of continuous variables. The 
+    **four prediction features** (latitude, longitude, month, precipitation) represent a limited 
+    subset of factors that influence wildfire severity in reality — additional features like 
+    vegetation type, soil moisture, elevation, and human activity could improve predictions. 
+    The **NASA EONET data** reflects reported events rather than all events, potentially 
+    introducing reporting bias toward larger, more visible, or more geographically accessible 
+    disasters. Finally, the **temporal scope** of the data is limited to recent events, and 
+    patterns may shift as climate change alters the relationships between geographic location, 
+    seasonal timing, and disaster severity over time.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Discussion: Research Questions
+    # ----------------------------
+    st.subheader("🔬 Answering the Research Questions")
+ 
+    st.info("""
+    **Q: Can climate variables distinguish disaster types?**  
+    Yes. PCA showed that temperature and humidity are the dominant factors differentiating 
+    disaster events, and clustering successfully separated events into climate-based groups. 
+    However, the dataset's wildfire dominance (99%) limited direct multi-category comparison.
+ 
+    **Q: Are wildfires associated with lower humidity levels?**  
+    Yes. Exploratory analysis confirmed that wildfires occur under significantly lower humidity 
+    conditions compared to other disaster types, consistent with established fire science.
+ 
+    **Q: Can disasters be predicted using climate features?**  
+    Yes. Logistic Regression achieved 97.8% accuracy predicting wildfire severity from just 
+    four features (latitude, longitude, month, precipitation), demonstrating strong predictive 
+    power for severity classification.
+ 
+    **Q: Which variables are most influential?**  
+    Geographic location (latitude and longitude) dominates prediction, accounting for over 83% 
+    of feature importance in Decision Trees. Month contributes approximately 10%, while 
+    precipitation adds only about 2%.
+ 
+    **Q: Which regions experience the most climate-sensitive disasters?**  
+    The strong latitude dependence in all models suggests that tropical and subtropical regions 
+    (lower latitudes) experience different severity patterns than temperate and boreal regions 
+    (higher latitudes), with geographic position being the primary determinant of fire risk level.
+ 
+    **Q: How do climate trends change over time for disasters?**  
+    Monthly analysis showed clear seasonal patterns, with wildfire activity peaking during warmer 
+    months. The month feature contributed to model accuracy, confirming that temporal patterns 
+    play a meaningful (though secondary) role in severity prediction.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Final Comparison Visual
+    # ----------------------------
+    st.subheader("📊 Final Model Performance Summary")
+ 
+    st.image("images/all_models_comparison.png",
+             caption="Complete Accuracy Comparison Across All Seven Models",
+             use_container_width=True)
+ 
+    st.markdown("""
+    | Rank | Model                          | Family              | Accuracy | Key Strength                          |
+    |------|--------------------------------|---------------------|----------|---------------------------------------|
+    | 1    | Logistic Regression            | Logistic Regression | 97.8%    | Near-perfect multi-class accuracy     |
+    | 2    | Gaussian NB                    | Naive Bayes         | 88.9%    | Best probabilistic model              |
+    | 3    | Bernoulli NB                   | Naive Bayes         | 77.8%    | Works with binary features            |
+    | 4    | Multinomial NB                 | Naive Bayes         | 75.6%    | Best on binary classification task    |
+    | 5    | Decision Tree 1 (Gini, d=4)    | Decision Tree       | 71.1%    | Most interpretable visual model       |
+    | 6    | Decision Tree 2 (Entropy, d=5) | Decision Tree       | 66.7%    | Demonstrates overfitting effect       |
+    | 7    | Decision Tree 3 (Gini, d=3)    | Decision Tree       | 64.4%    | Most robust / least overfit           |
+    """)
+ 
+ 
 # --------------------------------------------------
 # CONCLUSION
 # --------------------------------------------------
 with tab12:
+ 
     st.header("✅ Conclusion & Future Work")
-    if False:
-        st.write("""
-        This project demonstrates how integrating **real-time disaster data**
-        with **climate observations** can provide valuable insights into
-        the environmental conditions associated with natural disasters.
+ 
+    # ----------------------------
+    # Project Conclusion
+    # ----------------------------
+    st.subheader("📝 Project Conclusion")
+ 
+    st.info("""
+    This project successfully demonstrated that **climate and geographic variables can meaningfully 
+    predict wildfire severity** through a comprehensive data science pipeline integrating real-time 
+    disaster data from NASA EONET with climate observations from NASA POWER. Beginning with data 
+    collection and cleaning, through exploratory analysis, unsupervised learning (PCA, clustering, 
+    and association rule mining), and finally supervised classification, every stage of the analysis 
+    contributed unique insights into the relationship between environmental conditions and disaster 
+    behavior. The unsupervised methods revealed that climate variables are highly correlated and 
+    can be reduced to a small number of meaningful dimensions, that disaster events naturally 
+    cluster into groups based on climate similarity, and that specific combinations of climate 
+    conditions frequently co-occur. The supervised models showed that wildfire severity can be 
+    predicted with up to **97.8% accuracy** using only four features — latitude, longitude, month, 
+    and precipitation — with Logistic Regression emerging as the best-performing model across all 
+    seven algorithms tested. The consistent finding across all models that **geographic location 
+    (latitude and longitude) is the dominant predictor** of wildfire severity provides a robust, 
+    physically interpretable result that aligns with established fire science: a fire's location 
+    determines its surrounding vegetation, climate zone, seasonal patterns, and moisture availability, 
+    all of which directly influence fire behavior and intensity.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Key Takeaways
+    # ----------------------------
+    st.subheader("🎯 Key Takeaways")
+ 
+    col1, col2 = st.columns(2)
+ 
+    with col1:
+        st.info("""
+        **Data & Methodology Takeaways**
+ 
+        1. **Integrating multiple NASA data sources** (EONET + POWER) creates a richer dataset 
+           than either source alone, enabling climate-disaster correlation analysis that would 
+           not be possible with event data or climate data in isolation.
+ 
+        2. **Feature engineering is critical** — the composite risk score approach transformed 
+           an imbalanced single-class dataset into a balanced three-class problem suitable for 
+           supervised learning, while carefully separating label-construction variables from 
+           prediction features to prevent data leakage.
+ 
+        3. **The data science lifecycle is iterative** — insights from PCA (which variables 
+           matter most) informed clustering (how events group), which informed classification 
+           (can we predict severity), creating a coherent analytical narrative.
+ 
+        4. **Data preprocessing choices significantly impact results** — the same features 
+           produced accuracies ranging from 64.4% to 97.8% depending on the model and scaling 
+           method, highlighting that algorithm selection and data preparation are equally important.
         """)
-
-        st.subheader("Key Takeaways")
-        st.write("""
-        - Climate variables strongly influence disaster behavior  
-        - Data integration enables deeper environmental understanding  
-        - Exploratory analysis supports future predictive modeling  
+ 
+    with col2:
+        st.info("""
+        **Scientific & Practical Takeaways**
+ 
+        1. **Geographic location is the strongest predictor** of wildfire severity, accounting 
+           for over 83% of feature importance. This suggests that region-specific fire management 
+           strategies are more effective than universal approaches.
+ 
+        2. **Climate variables are highly interconnected** — PCA showed that temperature, humidity, 
+           and wind speed share substantial variance, and ARM revealed frequent co-occurrence 
+           patterns like high humidity with low temperature.
+ 
+        3. **Simple models can outperform complex ones** — Logistic Regression (a linear model) 
+           dramatically outperformed Decision Trees (nonlinear models), demonstrating that model 
+           complexity should match data complexity.
+ 
+        4. **Wildfire severity is predictable** — achieving 97.8% accuracy with just four 
+           features suggests that practical early-warning systems based on location and basic 
+           climate data are feasible and could support emergency response planning.
         """)
-
-        st.subheader("Future Enhancements")
-        st.write("""
-        - Incorporate historical climate trends  
-        - Apply advanced ensemble learning models  
-        - Perform regional risk assessment  
-        - Develop early-warning predictive systems  
-        """)
-
-    st.success("🌱 Data-driven climate analysis can support disaster preparedness and mitigation.")
-
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Future Work
+    # ----------------------------
+    st.subheader("🚀 Future Enhancements")
+ 
+    st.info("""
+    While this project established a strong foundation for climate-based disaster analysis, 
+    several enhancements could extend and strengthen the work in meaningful ways. First, 
+    **expanding the dataset** by collecting data over longer time periods and including more 
+    disaster categories (floods, storms, earthquakes) would increase sample size and enable 
+    true multi-category classification rather than severity-based proxy labels. Second, 
+    **incorporating additional features** such as vegetation index (NDVI), elevation, soil 
+    moisture, population density, and proximity to water bodies could capture factors that 
+    latitude and longitude only approximate, potentially improving prediction accuracy even 
+    further. Third, **applying ensemble methods** like Random Forests, Gradient Boosting 
+    (XGBoost), and Support Vector Machines would test whether non-linear models can close 
+    the gap with Logistic Regression or surpass it on larger datasets. Fourth, **temporal 
+    modeling** using time-series approaches could capture how climate conditions evolve in the 
+    days and weeks leading up to a disaster, rather than just using same-day measurements. 
+    Fifth, **developing a real-time prediction dashboard** that ingests live NASA EONET and 
+    POWER data and outputs severity predictions could provide actionable intelligence for 
+    emergency response teams. Sixth, **regional risk mapping** using the trained models could 
+    generate geographic visualizations of fire risk at different times of year, supporting 
+    proactive resource allocation. Finally, **cross-validation and bootstrapping** would 
+    provide more robust accuracy estimates and confidence intervals for model performance, 
+    addressing the limitation of the relatively small 150-sample dataset.
+    """)
+ 
+    st.markdown("---")
+ 
+    # ----------------------------
+    # Final Statement
+    # ----------------------------
+    st.success("""
+    🌱 **This project demonstrates that data-driven climate analysis — combining real-time 
+    disaster tracking with environmental observations and machine learning — can provide 
+    powerful tools for understanding, predicting, and ultimately mitigating the impact of 
+    natural disasters. By bridging the gap between climate science and disaster response, 
+    this work contributes to building more resilient communities in a changing world.**
+    """)
+ 
+    st.markdown("---")
+ 
+    st.subheader("📎 Resources & Links")
+ 
+    st.markdown("""
+    - **GitHub Repository:** [NASA EONET Climate Analysis](https://github.com/Vinay-15/NASA_ESONET_Climate_Analysis)
+    - **NASA EONET API:** [https://eonet.gsfc.nasa.gov/api/v3/events](https://eonet.gsfc.nasa.gov/api/v3/events)
+    - **NASA POWER API:** [https://power.larc.nasa.gov/api/temporal/daily/point](https://power.larc.nasa.gov/api/temporal/daily/point)
+    - **Scikit-Learn Documentation:** [https://scikit-learn.org](https://scikit-learn.org)
+    """)
+ 
 
 
 
