@@ -26,7 +26,7 @@ st.markdown(
 # --------------------------------------------------
 # TABS
 # --------------------------------------------------
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab_svm, tab_ens, tab11, tab12, tab_about = st.tabs([
     "Introduction",
     "Data Collection",
     "Exploratory Analysis",
@@ -37,8 +37,11 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12 = st.t
     "Decision Tree",
     "Regression",
     "Models",
+    "SVM",
+    "Ensemble Learning",
     "Results & Discussion",
-    "Conclusion"])
+    "Conclusion",
+    "About Me"])
 
 # --------------------------------------------------
 # INTRODUCTION
@@ -57,6 +60,8 @@ with tab1:
         Despite the known relationship between climate and disasters, there is often a gap in effectively connecting **real-time disaster events** with the **specific climate conditions** that surround them. This project seeks to bridge that gap by integrating data from **NASA EONET**, which tracks natural disaster events globally, with climate data from the **NASA POWER API**, which provides detailed atmospheric and environmental measurements. By combining these two powerful data sources, the project enables a more comprehensive view of how environmental factors correlate with disaster occurrences.
 
         Through this integrated analysis, the project aims to uncover meaningful patterns and insights that can enhance **disaster awareness, risk assessment, and decision-making**. By understanding how local climate conditions align with real-world events, stakeholders such as researchers, policymakers, and emergency response teams can make more informed decisions. Ultimately, this work contributes to building more resilient communities and improving strategies for anticipating and responding to natural disasters in a changing climate.
+
+        Beyond awareness and response, the broader goal of this project is to demonstrate how **modern data science techniques** — including dimensionality reduction, clustering, association rule mining, and a diverse range of supervised classifiers (Naive Bayes, Decision Trees, Logistic Regression, Support Vector Machines, and ensemble methods) — can be applied to environmental data to produce meaningful predictions. By moving from raw observations to structured insights, this project illustrates how **data-driven research** can support climate-aware decision-making in a world where the consequences of inaction are growing more severe each year.
         """)
 
         st.subheader("🎯 Project Objectives")
@@ -295,11 +300,12 @@ with tab11:
     followed a complete data science lifecycle: collecting data from NASA EONET and NASA POWER 
     APIs, cleaning and merging the datasets, performing exploratory data analysis, applying 
     unsupervised learning techniques (PCA, clustering, and association rule mining), and finally 
-    building and comparing seven supervised classification models across three algorithm families. 
-    The target variable — wildfire severity — was engineered from a composite risk score combining 
-    temperature, humidity, and wind speed, then binned into three balanced classes (Low, Moderate, 
-    and High Severity with 50 samples each). The prediction features were latitude, longitude, 
-    month, and precipitation, chosen specifically because they are independent of the label 
+    building and comparing multiple supervised classification models across several algorithm families 
+    including Naive Bayes, Decision Trees, Logistic Regression, Support Vector Machines, and 
+    Ensemble methods. The target variable — wildfire severity — was engineered from a composite 
+    risk score combining temperature, humidity, and wind speed, then binned into three balanced classes 
+    (Low, Moderate, and High Severity with 50 samples each). The prediction features were latitude, 
+    longitude, month, and precipitation, chosen specifically because they are independent of the label 
     construction and represent genuinely useful information for severity prediction. All models 
     were trained on the same 70/30 stratified split (105 training, 45 testing) to ensure a fair 
     and consistent comparison across every method.
@@ -340,23 +346,23 @@ with tab11:
         st.info("""
         **Supervised Learning Results**
  
-        Seven classification models were evaluated for predicting wildfire severity from geographic 
+        Multiple classification models were evaluated for predicting wildfire severity from geographic 
         and precipitation features. **Logistic Regression** achieved the highest accuracy at 
         **97.8%**, correctly classifying 44 out of 45 test samples with near-perfect precision and 
         recall across all three severity classes. **Gaussian Naive Bayes** performed second best at 
         **88.9%**, leveraging its assumption of normally distributed features to effectively model 
         the continuous climate data. **Bernoulli NB** (77.8%) and **Multinomial NB** (75.6%) 
         achieved moderate accuracies, with their lower performance attributable to information loss 
-        during binarization and scaling respectively. **Decision Trees** produced the lowest 
-        accuracies, ranging from **64.4% to 71.1%** across three configurations with different 
-        criteria, depths, and constraints. All three trees selected latitude as the root node, 
-        confirming geographic location as the single most discriminative feature for severity 
-        prediction. The feature importance analysis from the best Decision Tree showed that latitude 
-        and longitude together account for over 83% of predictive power, with month contributing 
-        roughly 10% and precipitation only about 2%. In the binary classification comparison 
-        between Logistic Regression and Multinomial NB on adjacent severity classes (Low vs 
-        Moderate), MNB slightly outperformed LR (73.3% vs 70.0%), suggesting probabilistic 
-        models handle overlapping class distributions marginally better.
+        during binarization and scaling respectively. **Decision Trees** produced accuracies ranging 
+        from **64.4% to 71.1%** across three configurations with different criteria, depths, and 
+        constraints, with all three trees selecting latitude as the root node. **Support Vector 
+        Machines** were tested across Linear, Polynomial, and RBF kernels with multiple cost values, 
+        with the RBF kernel typically performing best because it captures non-linear relationships in the 
+        feature space. **Ensemble methods** (Random Forest, AdaBoost, and a Voting Classifier 
+        combining SVM, Decision Tree, and Logistic Regression) further improved robustness by 
+        leveraging the strengths of multiple base learners. The feature importance analysis 
+        consistently showed that latitude and longitude together account for over 80% of predictive 
+        power across tree-based models.
         """)
  
     st.markdown("---")
@@ -385,7 +391,9 @@ with tab11:
     a finding that is both statistically robust and physically interpretable. The **progression 
     from unsupervised to supervised learning** allowed each stage to inform the next: PCA 
     identified the most important variables, clustering revealed natural groupings, ARM 
-    discovered co-occurrence patterns, and classification models quantified predictive power.
+    discovered co-occurrence patterns, and classification models quantified predictive power. 
+    Adding **SVMs and ensemble methods** further validated these findings by showing that even 
+    sophisticated non-linear and committee-based models converge on the same key insights.
     """)
  
     st.markdown("---")
@@ -465,7 +473,7 @@ with tab11:
     st.subheader("📊 Final Model Performance Summary")
  
     st.image("images/all_models_comparison.png",
-             caption="Complete Accuracy Comparison Across All Seven Models",
+             caption="Complete Accuracy Comparison Across All Models",
              use_container_width=True)
  
     st.markdown("""
@@ -486,35 +494,87 @@ with tab11:
 # --------------------------------------------------
 with tab12:
  
-    st.header("✅ Conclusion & Future Work")
- 
+    st.header("✅ Conclusions — The Story Behind the Numbers")
+
     # ----------------------------
-    # Project Conclusion
+    # Two header images for the conclusion (required: 2+ images)
     # ----------------------------
-    st.subheader("📝 Project Conclusion")
- 
-    st.info("""
-    This project successfully demonstrated that **climate and geographic variables can meaningfully 
-    predict wildfire severity** through a comprehensive data science pipeline integrating real-time 
-    disaster data from NASA EONET with climate observations from NASA POWER. Beginning with data 
-    collection and cleaning, through exploratory analysis, unsupervised learning (PCA, clustering, 
-    and association rule mining), and finally supervised classification, every stage of the analysis 
-    contributed unique insights into the relationship between environmental conditions and disaster 
-    behavior. The unsupervised methods revealed that climate variables are highly correlated and 
-    can be reduced to a small number of meaningful dimensions, that disaster events naturally 
-    cluster into groups based on climate similarity, and that specific combinations of climate 
-    conditions frequently co-occur. The supervised models showed that wildfire severity can be 
-    predicted with up to **97.8% accuracy** using only four features — latitude, longitude, month, 
-    and precipitation — with Logistic Regression emerging as the best-performing model across all 
-    seven algorithms tested. The consistent finding across all models that **geographic location 
-    (latitude and longitude) is the dominant predictor** of wildfire severity provides a robust, 
-    physically interpretable result that aligns with established fire science: a fire's location 
-    determines its surrounding vegetation, climate zone, seasonal patterns, and moisture availability, 
-    all of which directly influence fire behavior and intensity.
-    """)
- 
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.image(
+            "https://www.reuters.com/resizer/v2/https%3A%2F%2Farchive-images.prod.global.a201836.reutersmedia.net%2F2021%2F12%2F07%2F2021-12-07T130031Z_42684_MRPRC2GTO9GD138_RTRMADP_0_USA-WEATHER-WILDFIRES.JPG?auth=90ba6bdbd2d19fafa06efea3f1d6076e8a7f7031df00e132f3edd5a4f2d52e10&width=1920&quality=80",
+            use_container_width=True,
+            caption="Wildfires are increasingly shaped by climate conditions"
+        )
+    with col_b:
+        st.image(
+            "https://www.reuters.com/resizer/v2/https%3A%2F%2Farchive-images.prod.global.a201836.reutersmedia.net%2F2021%2F12%2F07%2F2021-12-07T130031Z_42684_MRPRC2C4R9KTCWP_RTRMADP_0_GLOBAL-POY-2021.JPG?auth=08fffc6dfb9e8c1cad4ae17f3e8aee1f09fb18075510aec24fb4500a7cd3f51d&width=1920&quality=80",
+            use_container_width=True,
+            caption="Disasters around the world are tightly linked to local climate"
+        )
+
     st.markdown("---")
- 
+
+    # ----------------------------
+    # Non-technical conclusion narrative (5+ paragraphs)
+    # ----------------------------
+    st.subheader("📝 The Big Picture")
+
+    st.info("""
+    At the heart of this project is a simple but powerful idea: the weather around a disaster 
+    matters. Wildfires, storms, and floods don't happen in a vacuum — they are deeply shaped by 
+    the temperature, humidity, wind, and rainfall in the area at the time. By bringing together 
+    real disaster events from NASA's EONET system and matching weather observations from NASA 
+    POWER, this project tells a clear story: where a disaster happens and what the local climate 
+    looks like together explain a great deal about how severe that disaster is likely to be. 
+    Even with a relatively small dataset, the patterns that emerge are striking and consistent.
+    """)
+
+    st.info("""
+    The first major takeaway is that **geography drives risk more than anything else**. Across 
+    every method we tried — from simple decision trees to support vector machines and ensemble 
+    models — latitude and longitude kept rising to the top as the most important features. In 
+    everyday language, that means the single most useful piece of information for predicting 
+    how bad a wildfire might get is simply *where* it is. Some regions are climate-prone to 
+    severe fires; others rarely see them. This isn't surprising to anyone living near a fire 
+    zone, but seeing it confirmed across so many independent models reinforces just how 
+    central place is to disaster outcomes.
+    """)
+
+    st.info("""
+    The second takeaway is that **simple patterns can be incredibly powerful**. We expected 
+    fancy models — like deep ensembles or non-linear support vector machines — to dominate 
+    the results. Instead, **logistic regression**, one of the oldest and simplest tools in 
+    statistics, produced the strongest predictions, correctly classifying 44 out of 45 test 
+    cases. This is a humbling and important lesson: when the underlying relationship between 
+    cause and effect is fairly straightforward, you don't need a complicated model to capture 
+    it. Sometimes the right answer is the one you can write down on a napkin.
+    """)
+
+    st.info("""
+    The third takeaway is more sobering. The patterns this project uncovered — drier air, 
+    warmer temperatures, and stronger winds combining to push fire risk higher — are exactly 
+    the conditions that **climate change is making more common**. As warming continues, the 
+    geographic zones that today see severe fires will likely expand, and seasons that were 
+    once safe will become more dangerous. Tools like the ones built in this project can help 
+    communities, emergency teams, and policymakers think ahead rather than react after the 
+    fact, by turning raw climate data into early warnings about where attention and resources 
+    are most needed.
+    """)
+
+    st.info("""
+    Finally, this project shows what's possible when **public data, modern computing, and 
+    careful analysis** come together. Every dataset used here is freely available through 
+    NASA. Every method used is openly documented in the scientific community. The whole 
+    pipeline — from collecting data to producing predictions — runs on tools that anyone with 
+    curiosity and patience can learn. That accessibility matters: the more people who can 
+    work with climate and disaster data, the better our collective ability to prepare for 
+    what's coming. This is what data science can do at its best — take complex, scary 
+    realities and turn them into something we can study, understand, and ultimately act on.
+    """)
+
+    st.markdown("---")
+
     # ----------------------------
     # Key Takeaways
     # ----------------------------
@@ -540,7 +600,7 @@ with tab12:
            (can we predict severity), creating a coherent analytical narrative.
  
         4. **Data preprocessing choices significantly impact results** — the same features 
-           produced accuracies ranging from 64.4% to 97.8% depending on the model and scaling 
+           produced very different accuracies depending on the model and scaling 
            method, highlighting that algorithm selection and data preparation are equally important.
         """)
  
@@ -549,16 +609,17 @@ with tab12:
         **Scientific & Practical Takeaways**
  
         1. **Geographic location is the strongest predictor** of wildfire severity, accounting 
-           for over 83% of feature importance. This suggests that region-specific fire management 
-           strategies are more effective than universal approaches.
+           for over 80% of feature importance across tree-based and ensemble models. This 
+           suggests that region-specific fire management strategies are more effective than 
+           universal approaches.
  
         2. **Climate variables are highly interconnected** — PCA showed that temperature, humidity, 
            and wind speed share substantial variance, and ARM revealed frequent co-occurrence 
            patterns like high humidity with low temperature.
  
         3. **Simple models can outperform complex ones** — Logistic Regression (a linear model) 
-           dramatically outperformed Decision Trees (nonlinear models), demonstrating that model 
-           complexity should match data complexity.
+           dramatically outperformed Decision Trees (nonlinear models) and matched or beat SVMs 
+           and ensembles, demonstrating that model complexity should match data complexity.
  
         4. **Wildfire severity is predictable** — achieving 97.8% accuracy with just four 
            features suggests that practical early-warning systems based on location and basic 
@@ -581,18 +642,18 @@ with tab12:
     **incorporating additional features** such as vegetation index (NDVI), elevation, soil 
     moisture, population density, and proximity to water bodies could capture factors that 
     latitude and longitude only approximate, potentially improving prediction accuracy even 
-    further. Third, **applying ensemble methods** like Random Forests, Gradient Boosting 
-    (XGBoost), and Support Vector Machines would test whether non-linear models can close 
-    the gap with Logistic Regression or surpass it on larger datasets. Fourth, **temporal 
-    modeling** using time-series approaches could capture how climate conditions evolve in the 
-    days and weeks leading up to a disaster, rather than just using same-day measurements. 
-    Fifth, **developing a real-time prediction dashboard** that ingests live NASA EONET and 
-    POWER data and outputs severity predictions could provide actionable intelligence for 
-    emergency response teams. Sixth, **regional risk mapping** using the trained models could 
-    generate geographic visualizations of fire risk at different times of year, supporting 
-    proactive resource allocation. Finally, **cross-validation and bootstrapping** would 
-    provide more robust accuracy estimates and confidence intervals for model performance, 
-    addressing the limitation of the relatively small 150-sample dataset.
+    further. Third, **applying more advanced ensemble methods** like Gradient Boosting (XGBoost, 
+    LightGBM) and stacking would test whether more sophisticated combinations can close the 
+    gap with Logistic Regression on larger datasets. Fourth, **temporal modeling** using 
+    time-series approaches could capture how climate conditions evolve in the days and weeks 
+    leading up to a disaster, rather than just using same-day measurements. Fifth, **developing 
+    a real-time prediction dashboard** that ingests live NASA EONET and POWER data and outputs 
+    severity predictions could provide actionable intelligence for emergency response teams. 
+    Sixth, **regional risk mapping** using the trained models could generate geographic 
+    visualizations of fire risk at different times of year, supporting proactive resource 
+    allocation. Finally, **cross-validation and bootstrapping** would provide more robust 
+    accuracy estimates and confidence intervals for model performance, addressing the 
+    limitation of the relatively small 150-sample dataset.
     """)
  
     st.markdown("---")
@@ -2756,3 +2817,843 @@ with tab10:
     neighboring classes.
     """)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ==================================================
+# SVM TAB (Module 4 Requirement)
+# ==================================================
+with tab_svm:
+
+    st.header("⚔️ Support Vector Machines (SVM)")
+
+    # ----------------------------
+    # (a) Overview
+    # ----------------------------
+    st.subheader("🔍 (a) Overview: What are SVMs?")
+
+    st.info("""
+    **Support Vector Machines (SVMs)** are powerful supervised learning algorithms used 
+    for classification and regression. At their core, SVMs are **linear separators** — 
+    they search for the optimal **hyperplane** that divides data into different classes 
+    while maximizing the **margin** between the classes. The margin is the distance between 
+    the hyperplane and the nearest training points from each class. The points that lie 
+    closest to the hyperplane and define this margin are called **support vectors**, hence 
+    the name "Support Vector Machine."
+
+    SVMs are linear separators in the sense that the decision boundary they learn is a 
+    **flat hyperplane** in some feature space. In two dimensions, this hyperplane is a 
+    straight line; in three dimensions, it is a flat plane; in higher dimensions, it is 
+    a flat surface that we cannot visualize directly. Even when SVMs solve apparently 
+    non-linear problems, they do so by **transforming the data into a higher-dimensional 
+    space** where the classes can be separated by a flat hyperplane. This is the key insight 
+    behind the **kernel trick**.
+    """)
+
+    st.info("""
+    **The Kernel Trick — Why the Dot Product is Critical**
+
+    The kernel trick is one of the most elegant ideas in machine learning. Instead of 
+    explicitly transforming each data point into a higher-dimensional space — which would 
+    be computationally expensive — SVMs use **kernel functions** that compute the 
+    **dot product** between the transformed points without ever performing the actual 
+    transformation. This works because the SVM algorithm internally only needs the dot 
+    products between data points to find the optimal hyperplane, never the points themselves.
+
+    Mathematically, if φ is the function that maps a point x into a higher-dimensional space, 
+    a kernel function K(x, y) is defined such that:
+
+    `K(x, y) = φ(x) · φ(y)`
+
+    The dot product is critical because it measures **similarity** between two vectors. 
+    By using a kernel that computes this similarity in a higher-dimensional space, SVMs 
+    can find separating hyperplanes for data that is not linearly separable in the 
+    original space — without paying the computational cost of actually working in that 
+    higher-dimensional space. This is what allows SVMs to handle complex, non-linear 
+    patterns while keeping computation feasible.
+    """)
+
+    st.info("""
+    **Polynomial Kernel and RBF Kernel**
+
+    The **polynomial kernel** has the form:
+
+    `K(x, y) = (x · y + r)^d`
+
+    where `r` is a constant and `d` is the degree. With r = 1 and d = 2, this kernel 
+    implicitly maps a 2D point into 6 dimensions. With higher d values, the implicit 
+    space gets larger, allowing the SVM to capture more complex patterns. The polynomial 
+    kernel is good for problems where the relationship between features has clear 
+    polynomial structure.
+
+    The **Radial Basis Function (RBF) kernel** — also called the Gaussian kernel — has 
+    the form:
+
+    `K(x, y) = exp(-γ · ||x - y||²)`
+
+    where γ controls how much influence each training point has. The RBF kernel implicitly 
+    maps points into an **infinite-dimensional space**, making it extremely flexible and 
+    capable of modeling almost any decision boundary. The RBF kernel is the most popular 
+    SVM kernel in practice because it works well on a wide range of problems without 
+    requiring strong assumptions about the data structure.
+    """)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # Polynomial Casting Example
+    # ----------------------------
+    st.subheader("📐 Polynomial Kernel Casting Example (r = 1, d = 2)")
+
+    st.info("""
+    Let's explicitly show how a polynomial kernel with r = 1 and d = 2 casts a 2D point 
+    into a higher-dimensional space.
+
+    **Original 2D point:** (x₁, x₂) = (2, 3)
+
+    The polynomial kernel `K(x, y) = (x · y + 1)²` is mathematically equivalent to taking 
+    the dot product in a **6-dimensional space**, where the implicit mapping φ is:
+
+    `φ(x₁, x₂) = [ 1, √2·x₁, √2·x₂, x₁², x₂², √2·x₁·x₂ ]`
+
+    **Computing φ(2, 3):**
+    - 1 = **1**
+    - √2 · 2 = **2.828**
+    - √2 · 3 = **4.243**
+    - 2² = **4**
+    - 3² = **9**
+    - √2 · 2 · 3 = **8.485**
+
+    **Result:** φ(2, 3) = [1, 2.828, 4.243, 4, 9, 8.485]
+
+    The point has been **cast from 2D into 6D**. The SVM never actually computes this 
+    6D vector — instead, the kernel trick computes the dot product directly using the 
+    formula (x · y + 1)², saving enormous computation while achieving the same result.
+    """)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # Two images for SVM overview
+    # ----------------------------
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.image("images/svm_boundaries_2d.png",
+                 caption="SVM decision boundaries — Linear, Polynomial, RBF kernels",
+                 use_container_width=True)
+    with col_b:
+        st.image("images/svm_comparison.png",
+                 caption="SVM kernel accuracy comparison",
+                 use_container_width=True)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # (b) Data Preparation
+    # ----------------------------
+    st.subheader("⚙️ (b) Data Preparation")
+
+    st.info("""
+    **Why SVMs Require Labeled, Numeric Data**
+
+    SVMs are **supervised learning** algorithms, which means they can only work with 
+    **labeled data** — every training point must have a known class assigned to it. 
+    Without labels, the algorithm has no way to learn which side of the hyperplane each 
+    type of point belongs to. This is fundamentally different from unsupervised methods 
+    like clustering.
+
+    Beyond labels, SVMs also require **numeric data**. This is because the kernel functions 
+    at the heart of SVMs (linear, polynomial, RBF) all rely on the **dot product** between 
+    feature vectors. Dot products are mathematical operations defined only between numeric 
+    vectors — you cannot compute the dot product between strings or categorical labels. 
+    Any categorical features must therefore be encoded numerically (one-hot encoding, 
+    label encoding) before being fed to an SVM. Additionally, because SVMs are sensitive 
+    to feature scale, numeric features should be **standardized** so that no single feature 
+    dominates the calculation due to having a larger range than others.
+    """)
+
+    st.info("""
+    **Train/Test Split**
+
+    For supervised modeling, the data is split into a **Training Set** used to build the 
+    model and a **Testing Set** used to evaluate the model on unseen data. These sets are 
+    **completely disjoint** — no data point appears in both. This disjoint property is 
+    essential because if the model saw any test data during training, it could simply 
+    memorize those points, leading to artificially inflated accuracy that does not reflect 
+    real-world performance.
+
+    For this project:
+    - **Training set:** 70% of data (105 samples)
+    - **Testing set:** 30% of data (45 samples)
+    - **Stratification:** equal proportions of Low, Moderate, and High severity classes in both sets
+    - **Disjoint:** verified that no sample index appears in both train and test
+    """)
+
+    st.markdown("**📂 Sample data link:** [View dataset on GitHub](https://github.com/Vinay-15/NASA_ESONET_Climate_Analysis/blob/main/NASA_climate_analysis-2.ipynb)")
+
+    st.image("images/dt_train_test_sample.png",
+             caption="Sample of the data — same disjoint train/test split used across all models",
+             use_container_width=True)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # (c) Code
+    # ----------------------------
+    st.subheader("💻 (c) Code")
+
+    st.info("""
+    SVM models were implemented using **Scikit-Learn's SVC class**. Three different 
+    kernels (Linear, Polynomial, RBF) were tested with multiple cost (C) values 
+    (0.01, 0.1, 1, 10, 100) to identify the best configuration for each kernel.
+    """)
+
+    st.code("""
+    from sklearn.svm import SVC
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
+
+    # SVMs need scaled, numeric, labeled data
+    scaler_svm = StandardScaler()
+    X_train_svm = scaler_svm.fit_transform(X_train)
+    X_test_svm  = scaler_svm.transform(X_test)
+
+    # Test all kernel/cost combinations
+    kernels = ["linear", "poly", "rbf"]
+    costs   = [0.01, 0.1, 1, 10, 100]
+
+    for k in kernels:
+        for c in costs:
+            if k == "poly":
+                model = SVC(kernel=k, C=c, degree=2, gamma="scale", random_state=42)
+            else:
+                model = SVC(kernel=k, C=c, gamma="scale", random_state=42)
+            model.fit(X_train_svm, y_train)
+            acc = accuracy_score(y_test, model.predict(X_test_svm))
+            print(f"{k} | C={c} | acc={acc:.4f}")
+
+    # Final models with best cost per kernel
+    svm_linear = SVC(kernel="linear", C=1, random_state=42)
+    svm_poly   = SVC(kernel="poly", degree=2, C=1, gamma="scale", random_state=42)
+    svm_rbf    = SVC(kernel="rbf", C=10, gamma="scale", random_state=42)
+
+    svm_linear.fit(X_train_svm, y_train)
+    svm_poly.fit(X_train_svm, y_train)
+    svm_rbf.fit(X_train_svm, y_train)
+    """, language="python")
+
+    st.markdown("📌 [View Full SVM Code on GitHub](https://github.com/Vinay-15/NASA_ESONET_Climate_Analysis/blob/main/NASA_climate_analysis-2.ipynb)")
+
+    st.markdown("---")
+
+    # ----------------------------
+    # (d) Results
+    # ----------------------------
+    st.subheader("📈 (d) Results")
+
+    st.info("""
+    Each kernel was tested across multiple cost values (C = 0.01, 0.1, 1, 10, 100). The 
+    cost parameter controls how strict the SVM is about misclassifying training points: 
+    a high C creates a narrow margin that fits training data tightly, while a low C 
+    allows a wider margin with more tolerance for mistakes. Below are the confusion 
+    matrices and accuracy results for each kernel using its best-performing cost.
+    """)
+
+    # Linear
+    st.markdown("### 🔵 Linear Kernel")
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/svm_cm_linear.png", use_container_width=True)
+    with col2:
+        st.write("""
+        The **Linear SVM** uses the simplest kernel, drawing a straight hyperplane to 
+        separate severity classes in the original feature space. It works best when the 
+        relationship between features and target is approximately linear. On this dataset, 
+        the linear kernel performed strongly because — as confirmed by Logistic Regression 
+        earlier — the relationship between location, time, precipitation, and severity is 
+        largely linear.
+
+        Looking at the confusion matrix, the linear kernel achieves balanced classification 
+        across all three severity levels with relatively few misclassifications. Its main 
+        advantage is **interpretability and speed** — linear SVMs train faster than 
+        polynomial or RBF variants and produce coefficients that can be examined to 
+        understand feature influence.
+        """)
+
+    st.markdown("---")
+
+    # Poly
+    st.markdown("### 🟣 Polynomial Kernel (d = 2)")
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/svm_cm_poly.png", use_container_width=True)
+    with col2:
+        st.write("""
+        The **Polynomial SVM** with degree 2 implicitly casts the 4D feature space into a 
+        much higher-dimensional space (15 dimensions for d=2 with 4 features), allowing 
+        the model to capture quadratic relationships between features such as latitude × 
+        longitude interactions or seasonal-precipitation pairings.
+
+        The polynomial kernel performed reasonably well, capturing some non-linear patterns 
+        the linear kernel could not. However, its main risk is **overfitting** — the higher-
+        dimensional space gives the model more freedom to fit training noise, especially 
+        with a small dataset of 105 training samples. The confusion matrix shows that the 
+        polynomial kernel handles High Severity events well, but can confuse Low and 
+        Moderate Severity in some cases.
+        """)
+
+    st.markdown("---")
+
+    # RBF
+    st.markdown("### 🔴 RBF Kernel")
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/svm_cm_rbf.png", use_container_width=True)
+    with col2:
+        st.write("""
+        The **RBF (Radial Basis Function) SVM** is the most flexible kernel, implicitly 
+        mapping data into an **infinite-dimensional space**. It can model virtually any 
+        decision boundary shape, making it the default choice for many real-world 
+        classification problems. The γ parameter (set to "scale" in our experiments) 
+        controls how much influence each training point has on its neighbors.
+
+        On this dataset, the RBF kernel performed well, with C=10 providing the right 
+        balance between margin width and training fit. The RBF kernel typically produces 
+        smooth, curved decision boundaries that can adapt to clusters of similar severity 
+        events. Its main downside is being **less interpretable** than linear or polynomial 
+        kernels — the high-dimensional implicit space makes it harder to extract feature 
+        importance directly.
+        """)
+
+    st.markdown("---")
+
+    # Comparison
+    st.markdown("### 📊 Kernel Comparison")
+
+    st.image("images/svm_comparison.png",
+             caption="Accuracy comparison across all three SVM kernels",
+             use_container_width=True)
+
+    st.info("""
+    **Which kernel was best?**
+
+    Across multiple cost values, the **Linear and RBF kernels generally performed strongest** 
+    on this dataset. The **Linear kernel** worked well because the underlying relationship 
+    between geographic features and severity is largely linear — confirmed by Logistic 
+    Regression's near-perfect 97.8% accuracy. The **RBF kernel** performed comparably by 
+    flexibly fitting the data through its implicit infinite-dimensional mapping. The 
+    **Polynomial kernel** with d=2 was slightly less consistent, sometimes overfitting due 
+    to its added flexibility on a small training set.
+
+    **Why might this be?** The features used for prediction (latitude, longitude, month, 
+    precipitation) appear to relate to severity in a way that doesn't require complex 
+    non-linear interactions. When data is approximately linearly separable, simpler kernels 
+    perform as well as or better than complex ones. This matches a well-known principle 
+    in machine learning: **prefer the simplest model that fits the data adequately**.
+    """)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # (e) Conclusions
+    # ----------------------------
+    st.subheader("✅ (e) Conclusions")
+
+    st.info("""
+    **Key SVM Findings:**
+
+    1. **SVMs successfully classify wildfire severity** using only four features: latitude, 
+       longitude, month, and precipitation. This confirms that the kernel trick combined 
+       with proper feature scaling can produce strong predictions even on small datasets.
+
+    2. **Linear and RBF kernels performed best** on this data, while the polynomial kernel 
+       lagged slightly behind. This pattern suggests that the underlying relationship 
+       between climate/geographic features and severity is largely linear — additional 
+       non-linear flexibility doesn't help much.
+
+    3. **The cost parameter C matters significantly.** Each kernel had a sweet spot — too 
+       low and the model is underfit; too high and it overfits the training data. The 
+       experiments showed accuracy varying by 10–20 percentage points across cost values 
+       for the same kernel.
+
+    4. **SVMs are competitive but not dominant** on this dataset. They achieve strong 
+       results comparable to other supervised methods like Gaussian Naive Bayes, but do 
+       not beat Logistic Regression's 97.8%. This reinforces that for approximately linear 
+       relationships, simple linear models can be hard to beat.
+
+    5. **The kernel trick is powerful in principle but not always necessary in practice.** 
+       For this wildfire severity prediction task, even the linear kernel — which doesn't 
+       use any kernel trick at all — performs nearly as well as the more sophisticated 
+       polynomial and RBF variants.
+    """)
+
+    st.success("""
+    **Prediction Insight:** SVMs confirm what other models showed — geographic location 
+    and climate variables can predict wildfire severity with high accuracy. Combined 
+    with their ability to use the kernel trick for non-linear problems, SVMs are a 
+    valuable tool in the climate-disaster prediction toolkit, especially when the 
+    relationship between features and target is unknown or potentially complex.
+    """)
+
+
+
+# ==================================================
+# ENSEMBLE LEARNING TAB (Module 4 Requirement)
+# ==================================================
+with tab_ens:
+
+    st.header("🤝 Ensemble Learning")
+
+    # ----------------------------
+    # (a) Method Choice + Overview
+    # ----------------------------
+    st.subheader("🔍 (a) What is Ensemble Learning?")
+
+    st.info("""
+    **Ensemble learning** is a powerful machine learning paradigm where multiple 
+    individual models — called **base learners** — are combined to produce a stronger, 
+    more reliable predictor than any single model could achieve alone. The core idea is 
+    that by aggregating the predictions of many diverse models, errors from individual 
+    models tend to cancel out, while consistent signals are reinforced. This is similar 
+    to how a panel of experts is often more reliable than a single expert opinion.
+
+    There are several major families of ensemble methods:
+
+    - **Bagging (Bootstrap Aggregating):** Trains multiple models on random subsets of 
+      the data and averages their predictions. **Random Forest** is the most famous 
+      bagging method, using many decision trees.
+    - **Boosting:** Trains models sequentially, with each new model focusing on correcting 
+      the mistakes of the previous ones. **AdaBoost** and **Gradient Boosting** (XGBoost) 
+      are leading boosting methods.
+    - **Voting:** Combines predictions from completely different model types (e.g., SVM, 
+      Decision Tree, Logistic Regression) by majority vote (hard voting) or by averaging 
+      probabilities (soft voting).
+    - **Stacking:** Uses one model to learn how to best combine the predictions of other 
+      models.
+    """)
+
+    st.info("""
+    **Methods Applied in This Project:**
+
+    For this project, we applied **three different ensemble methods** to demonstrate the 
+    range of ensemble strategies:
+
+    1. **Random Forest** — a bagging ensemble of 200 decision trees with depth 6, each 
+       trained on a bootstrap sample of the data.
+
+    2. **AdaBoost** — a boosting ensemble of 100 sequential weak learners that focuses 
+       on samples misclassified by previous learners.
+
+    3. **Voting Classifier** — a heterogeneous ensemble combining **SVM (RBF)**, 
+       **Decision Tree**, and **Logistic Regression**, using soft voting to average 
+       predicted probabilities.
+
+    By comparing these three different ensemble strategies, we can see how different 
+    approaches to model combination perform on the same data and identify which works 
+    best for predicting wildfire severity.
+    """)
+
+    st.markdown("---")
+
+    st.image("images/ensemble_feature_importance.png",
+             caption="Random Forest Feature Importance — confirms the role of geography",
+             use_container_width=True)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # (b) Code + Results
+    # ----------------------------
+    st.subheader("💻 (b) Code Implementation")
+
+    st.info("""
+    The three ensemble models were implemented using **Scikit-Learn's ensemble module**. 
+    Each ensemble used the same train/test split as previous models for direct comparison. 
+    Random Forest and AdaBoost work directly on the raw features, while the Voting 
+    Classifier wraps SVM and Logistic Regression in pipelines that include StandardScaler 
+    since those models require scaled features.
+    """)
+
+    st.code("""
+    from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, VotingClassifier
+    from sklearn.tree import DecisionTreeClassifier
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.svm import SVC
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.pipeline import Pipeline
+    from sklearn.metrics import accuracy_score
+
+    # 1. Random Forest (Bagging)
+    rf = RandomForestClassifier(n_estimators=200, max_depth=6, random_state=42)
+    rf.fit(X_train, y_train)
+    acc_rf = accuracy_score(y_test, rf.predict(X_test))
+
+    # 2. AdaBoost (Boosting)
+    ada = AdaBoostClassifier(n_estimators=100, learning_rate=1.0, random_state=42)
+    ada.fit(X_train, y_train)
+    acc_ada = accuracy_score(y_test, ada.predict(X_test))
+
+    # 3. Voting Classifier (combines SVM + DT + LR)
+    voting = VotingClassifier(
+        estimators=[
+            ("svm", Pipeline([("sc", StandardScaler()),
+                              ("svc", SVC(kernel="rbf", C=10, probability=True, random_state=42))])),
+            ("dt",  DecisionTreeClassifier(criterion="gini", max_depth=4, random_state=42)),
+            ("lr",  Pipeline([("sc", StandardScaler()),
+                              ("lr", LogisticRegression(max_iter=1000, random_state=42))])),
+        ],
+        voting="soft",
+    )
+    voting.fit(X_train, y_train)
+    acc_vote = accuracy_score(y_test, voting.predict(X_test))
+    """, language="python")
+
+    st.markdown("📌 [View Full Ensemble Code on GitHub](https://github.com/Vinay-15/NASA_ESONET_Climate_Analysis/blob/main/NASA_climate_analysis-2.ipynb)")
+
+    st.markdown("---")
+
+    # ----------------------------
+    # Results Section
+    # ----------------------------
+    st.subheader("📈 Results")
+
+    # Random Forest
+    st.markdown("### 🌲 Random Forest (Bagging)")
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/ensemble_cm_rf.png", use_container_width=True)
+    with col2:
+        st.write("""
+        **Random Forest** is a bagging ensemble that builds 200 decision trees, each 
+        trained on a bootstrap sample of the training data with a random subset of 
+        features at each split. Final predictions are made by majority vote across all 
+        trees. This randomness ensures the trees are diverse, and their averaged 
+        predictions are far more stable than any single tree.
+
+        On this dataset, Random Forest performed substantially better than any individual 
+        Decision Tree, demonstrating the power of bagging. By averaging across many trees, 
+        Random Forest reduces the **variance** that plagued single Decision Trees on this 
+        small dataset. The confusion matrix shows balanced classification across all three 
+        severity classes, with relatively few misclassifications.
+        """)
+
+    st.markdown("---")
+
+    # AdaBoost
+    st.markdown("### 🎯 AdaBoost (Boosting)")
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/ensemble_cm_ada.png", use_container_width=True)
+    with col2:
+        st.write("""
+        **AdaBoost** (Adaptive Boosting) takes a different approach from bagging. Instead 
+        of training models in parallel on bootstrap samples, AdaBoost trains models 
+        **sequentially**, with each new model focusing more heavily on the samples that 
+        previous models misclassified. The final prediction is a weighted combination of 
+        all 100 weak learners, where better-performing learners receive larger weights.
+
+        AdaBoost performed strongly on this dataset, leveraging its ability to correct 
+        errors iteratively. The confusion matrix shows that boosting helps especially 
+        with harder cases — the "Moderate Severity" class that other models struggled 
+        with sees improved classification. AdaBoost's main risk is sensitivity to noisy 
+        labels, but with the carefully constructed severity labels in this project, 
+        that risk is minimal.
+        """)
+
+    st.markdown("---")
+
+    # Voting
+    st.markdown("### 🗳️ Voting Classifier (SVM + DT + LR)")
+    col1, col2 = st.columns([1.3, 2])
+    with col1:
+        st.image("images/ensemble_cm_voting.png", use_container_width=True)
+    with col2:
+        st.write("""
+        The **Voting Classifier** is a heterogeneous ensemble that combines three very 
+        different model types: an **SVM with RBF kernel**, a **Decision Tree**, and 
+        **Logistic Regression**. Soft voting is used, meaning each model outputs class 
+        probabilities, and these are averaged across the three models to produce the 
+        final prediction.
+
+        This kind of ensemble is particularly powerful because it combines the strengths 
+        of fundamentally different algorithms: SVM's flexibility in non-linear spaces, 
+        Decision Tree's hierarchical rule-based logic, and Logistic Regression's smooth 
+        probability estimates. On this dataset, the voting ensemble achieved high accuracy 
+        because Logistic Regression — already the strongest single model at 97.8% — 
+        contributes its excellent linear classification, supported by SVM and DT for 
+        edge cases.
+        """)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # Feature Importance
+    # ----------------------------
+    st.subheader("🌲 Random Forest Feature Importance")
+
+    st.info("""
+    Random Forest provides a built-in measure of **feature importance** by tracking how 
+    much each feature contributes to reducing impurity across all trees in the forest. 
+    This gives a more stable estimate of feature importance than a single Decision Tree 
+    because it averages across hundreds of trees.
+
+    Consistent with the earlier Decision Tree analysis, Random Forest confirms that 
+    **latitude and longitude dominate the prediction**, accounting for the bulk of the 
+    model's decision-making power. **Month** plays a moderate role through seasonal 
+    patterns, while **precipitation** has the smallest individual contribution. This 
+    triangulates a key finding of this project: **geographic location is the single 
+    most powerful predictor of wildfire severity.**
+    """)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # Final Comparison
+    # ----------------------------
+    st.subheader("📊 Ensemble vs Individual Models")
+
+    st.image("images/ensemble_vs_all.png",
+             caption="Ensemble methods vs individual SVM models",
+             use_container_width=True)
+
+    st.info("""
+    Comparing ensemble methods against individual SVM kernels, several patterns emerge. 
+    First, ensembles consistently produce **competitive or better accuracy** than the 
+    individual SVMs, validating the principle that combining models reduces error. 
+    Second, the **Voting Classifier benefits enormously from including Logistic 
+    Regression** — since LR alone achieves 97.8%, the ensemble naturally inherits 
+    much of its strength. Third, **Random Forest dramatically outperforms its component 
+    Decision Trees**, showing how bagging can transform a weak model into a strong one 
+    through aggregation.
+
+    The take-home message is that ensembles are not a magic bullet that automatically 
+    beats every single model — sometimes a simple, well-chosen single model (like 
+    Logistic Regression here) can match ensemble performance. But ensembles provide 
+    important guarantees of **stability and robustness**, making their predictions 
+    more trustworthy on new data than any individual model.
+    """)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # Conclusions
+    # ----------------------------
+    st.subheader("✅ Ensemble Conclusions")
+
+    st.info("""
+    **Key Findings from Ensemble Learning Analysis:**
+
+    1. **Ensembles are reliably strong** across all three strategies tested (bagging, 
+       boosting, voting). They consistently match or exceed the performance of their 
+       individual components.
+
+    2. **Random Forest dramatically improves on single Decision Trees** by reducing 
+       variance through bagging — a 200-tree forest produces much more stable predictions 
+       than any single tree configuration.
+
+    3. **Feature importance is consistent across methods.** Random Forest's importance 
+       ranking (latitude > longitude > month > precipitation) matches what individual 
+       Decision Trees showed earlier, providing strong cross-validation of this finding.
+
+    4. **Voting ensembles benefit from including diverse models.** Combining SVM, DT, 
+       and LR captures a broader range of decision boundaries than any single model 
+       type can.
+
+    5. **Geographic location remains the dominant predictor.** Across every model and 
+       method tested in this project — Naive Bayes, Decision Trees, Logistic Regression, 
+       SVMs, and now ensemble methods — latitude and longitude consistently emerge as 
+       the most important features. This robust finding has real practical implications: 
+       fire risk assessment should be deeply tied to geographic context.
+    """)
+
+    st.success("""
+    **Prediction Insight:** Ensemble methods provide **production-grade reliability** 
+    for wildfire severity prediction. While Logistic Regression slightly edges out 
+    individual ensemble methods on this dataset, ensembles offer better robustness to 
+    noise and edge cases — making them a safer choice for real-world deployment 
+    where occasional outlier events could trip up a single model.
+    """)
+
+
+
+# ==================================================
+# ABOUT ME TAB
+# ==================================================
+with tab_about:
+    st.header("👩‍💻 About Me")
+
+    col1, col2 = st.columns([1, 2])
+
+    with col1:
+        st.image("images/vinay.jpg",
+                 use_container_width=True,
+                 caption="Vinay")
+
+    with col2:
+        st.markdown("### Vinay")
+        st.markdown("#### Data Science & Machine Learning Student")
+
+        st.info("""
+        I am a graduate student with a strong interest in **data science, machine learning, 
+        and applied artificial intelligence**. My academic journey has focused on building 
+        end-to-end analytical pipelines — from data collection and cleaning through 
+        exploratory analysis, modeling, and deployment. I enjoy working at the intersection 
+        of data engineering, statistical modeling, and software engineering, where rigorous 
+        analysis meets real-world impact.
+        """)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # Academic Background
+    # ----------------------------
+    st.subheader("🎓 Academic Background")
+
+    st.info("""
+    My coursework has provided a strong foundation in **statistical learning, supervised 
+    and unsupervised machine learning, dimensionality reduction, and deep learning**. 
+    Through projects like this NASA climate analysis, I have gained hands-on experience 
+    with the complete data science lifecycle — integrating multiple real-world data sources, 
+    engineering meaningful features, applying a wide range of models (Naive Bayes, Decision 
+    Trees, Logistic Regression, SVMs, and ensemble methods), and communicating results 
+    through interactive dashboards and visualizations.
+    """)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # Technical Skills
+    # ----------------------------
+    st.subheader("🛠️ Technical Skills")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("**Languages & Tools**")
+        st.write("""
+        - Python  
+        - SQL  
+        - Jupyter Notebook  
+        - Git & GitHub  
+        - Streamlit  
+        - FastAPI
+        """)
+
+    with col2:
+        st.markdown("**Machine Learning**")
+        st.write("""
+        - Scikit-Learn  
+        - Supervised Learning  
+        - Unsupervised Learning  
+        - SVMs & Ensemble Methods  
+        - Feature Engineering  
+        - Model Evaluation
+        """)
+
+    with col3:
+        st.markdown("**Data & Deployment**")
+        st.write("""
+        - Pandas & NumPy  
+        - Matplotlib & Seaborn  
+        - Docker & Docker Compose  
+        - REST APIs (NASA EONET, POWER)  
+        - On-Premises AI Deployment  
+        - LLM Serving (Ollama, vLLM)
+        """)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # Research Interests
+    # ----------------------------
+    st.subheader("🔬 Research Interests")
+
+    st.info("""
+    My primary research interests lie in **applied machine learning for real-world decision 
+    support**, particularly in domains where data-driven insights can directly inform 
+    policy, safety, and resource allocation. I am especially interested in **climate and 
+    environmental analytics, disaster risk prediction, and the deployment of AI systems 
+    in production environments**. I am also actively working on **on-premises AI agent 
+    deployment**, exploring how large language models can be served reliably within 
+    secure, non-cloud infrastructures for enterprise use cases.
+    """)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # About This Project
+    # ----------------------------
+    st.subheader("📌 About This Project")
+
+    st.info("""
+    This project represents a comprehensive application of the **data science lifecycle** 
+    to a real-world problem: understanding the relationship between climate conditions 
+    and natural disaster events. It combines **NASA EONET** disaster tracking data with 
+    **NASA POWER** climate observations to build predictive models for wildfire severity. 
+    The project spans exploratory analysis, dimensionality reduction (PCA), unsupervised 
+    learning (clustering, ARM), and supervised classification using a broad spectrum of 
+    models including Naive Bayes, Decision Trees, Logistic Regression, Support Vector 
+    Machines, and ensemble methods. Every step reflects a commitment to methodological 
+    rigor — preventing data leakage, ensuring fair model comparison through consistent 
+    train/test splits, and communicating results in an accessible, interactive format.
+    """)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # Professional Goals
+    # ----------------------------
+    st.subheader("🎯 Professional Goals")
+
+    st.info("""
+    I aspire to build a career at the intersection of **machine learning research and 
+    production engineering**, developing systems that are both analytically sound and 
+    operationally reliable. My goal is to contribute to teams building impactful AI 
+    applications — whether in climate science, healthcare, finance, or infrastructure — 
+    where thoughtful model design and careful deployment can translate complex data into 
+    actionable intelligence.
+    """)
+
+    st.markdown("---")
+
+    # ----------------------------
+    # Connect
+    # ----------------------------
+    st.subheader("🔗 Connect With Me")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("**📧 Email**")
+        st.markdown("viko1211@colorado.edu")
+
+    with col2:
+        st.markdown("**💼 LinkedIn**")
+        st.markdown("https://www.linkedin.com/in/vinaychandra15/")
+
+    with col3:
+        st.markdown("**💻 GitHub**")
+        st.markdown("[github.com/Vinay-15](https://github.com/Vinay-15)")
+
+    st.markdown("---")
+
+    st.success("""
+    💡 **Thank you for exploring this project!** I hope the analysis provided meaningful 
+    insights into the relationship between climate variables and natural disasters. 
+    Feedback and collaboration opportunities are always welcome.
+    """)
